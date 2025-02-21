@@ -1,2 +1,2 @@
-# Wetter-App-
+# Wetter-App
 ☀️🌦️
