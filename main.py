@@ -1,5 +1,5 @@
 from weather_api import *
-
+from gui import *
 class Main:
     
     def __init__(self):
@@ -9,6 +9,7 @@ class Main:
     user_input = ""
     
     def main() -> None:
+        MainWindow.start_gui()
         print("Wilkommen bei der Wetter-App")
         print("****************************")
         Main.ask_for_user_input()
@@ -20,7 +21,6 @@ class Main:
         dict_data = {k: v for (k,v) in data[data_list[0]][0].items()}
         dict_data.update(data[data_list[1]])
         Main.weather_data = dict_data
-        print(Main.weather_data)
     
     def build_gui(weather) -> None:
         print(f"Aktuelles Wetter für {Main.user_input}".center(48))
