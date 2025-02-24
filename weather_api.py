@@ -12,7 +12,6 @@ class Weather_api:
         url = f"{Weather_api.basic_url}/data/2.5/weather?lat={Weather_api.lat}&lon={Weather_api.lon}&appid={Weather_api.api_key}&units=metric&lang=de"
         response = requests.get(url)
         response_data = response.json()
-        print(response_data)
         return response_data
     
     def request_forecast() -> dict:

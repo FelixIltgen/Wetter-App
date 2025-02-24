@@ -31,8 +31,17 @@ class Main:
         print(f"Minimal: {weather["temp_min"]:.1f} C° und maximal {weather["temp_max"]:.1f} C°")
         print(f"Luftfeuchtigkeit: {weather["humidity"]} %")
         print(f"************************************************")
+        Main.ask_again()
         
-          
+    def ask_again():
+        user_input = input("Möchtest du erneut Wetterdaten abfargen? Y/N: ").upper()
+        if(user_input == "Y"):
+            Main.main()
+        elif(user_input =="N"):
+            print("Tschüss")
+        else:
+            print("Eingabe ist Falsch!")
+            Main.ask_again()
     def ask_for_user_input():
         Main.user_input = input("Gebe ein Standort an: ")
         Main.weather_data = Weather_api.convert_name_in_location(Main.user_input)
