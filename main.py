@@ -1,21 +1,20 @@
 from weather_api import *
 
 class Main:
-    weather_data = {}
-    user_input = ""
+    
     def __init__(self):
         pass
     
-    def main() -> None:
-        Main.start_weather_app()
-        Main.extrtact_weather_data(Main.weather_data)
-        Main.build_gui(Main.weather_data)
+    weather_data = {}
+    user_input = ""
     
-    def start_weather_app() -> None:
+    def main() -> None:
         print("Wilkommen bei der Wetter-App")
         print("****************************")
         Main.ask_for_user_input()
-    
+        Main.extrtact_weather_data(Main.weather_data)
+        Main.build_gui(Main.weather_data)
+       
     def extrtact_weather_data(data=dict) -> dict:
         data_list = [new_data for new_data in data if new_data == "weather" or new_data =="main"]
         dict_data = {k: v for (k,v) in data[data_list[0]][0].items()}
@@ -42,9 +41,16 @@ class Main:
         else:
             print("Eingabe ist Falsch!")
             Main.ask_again()
+    
     def ask_for_user_input():
         Main.user_input = input("Gebe ein Standort an: ")
         Main.weather_data = Weather_api.convert_name_in_location(Main.user_input)
 
 if __name__ == "__main__":
     Main.main()
+
+#To do's
+#Richtige Gui
+#Bild für gewisses Wetter anzeigen
+#Forecast 
+#Wetterkarte anzeigens => wenn möglich
