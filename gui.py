@@ -1,6 +1,6 @@
 from weather_api import *
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QGridLayout, QWidget, QDesktopWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton
 from PyQt5.QtGui import QIcon, QFont, QPixmap
 from PyQt5.QtCore import Qt
 
@@ -12,28 +12,37 @@ class MainWindow(QMainWindow):
         self.setGeometry(0,0,600,800)
         self.setStyleSheet("background-color: #62c8f0")
 
-        label = QLabel("Hello", self)
-        label.setFont(QFont("Arial", 40))
-        label.setGeometry(0, 0, 600, 100)
-        label.setStyleSheet("color: #292929;"
-                                           "background-color: #6fdcf7;"
-                                           "font-weight: bold;"
-                                           "text-decoration: underline;")
-        weather_pic = QLabel(self)
-        weather_pic.setGeometry(0,0,100,100)
-        pixmap = QPixmap("pictures//app_icon.png")
-        weather_pic.setPixmap(pixmap)
-        weather_pic.setScaledContents(True)
-        weather_pic.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-        weather_pic.setGeometry((self.width()-weather_pic.width())//2,(self.height()-weather_pic.height()-200)//2,weather_pic.width(),weather_pic.height())
-    
-
         qtRectangle = self.frameGeometry()
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
         self.move(qtRectangle.topLeft())
 
+        self.headline = QLabel("Überschrift", self)
+        self.input_field = QLineEdit("Test", self)
+        self.button = QPushButton("Send", self)
+        self.weather_pic = QLabel(self)
+        #self.pixmap = QPixmap("")=> Kann glaube ichauch erst in funktion erstellt werden
+        self.output_label = QLabel(self)
+
+        self.init_ui()
+
+    def init_ui(self):
+
+        self.headline.setFont(QFont("Arial",40))
+        self.headline.setGeometry(0, 0, self.width(), 100)
+        #self.headline.setAlignment(Qt.AlignHCenter | Qt.AlignVCenters)
+        self.headline.setStyleSheet("color: #292929;"
+                                           "background-color: #6fdcf7;"
+                                           "font-weight: bold;"
+                                           "text-decoration: underline;")
+        self.weather_pic.setGeometry(0,0,300,300)
+        self.weather_pic.setGeometry((self.width()-self.weather_pic.width())//2,(self.height()-self.weather_pic.height())//2-50,self.weather_pic.width(),self.weather_pic.height())
+        self.weather_pic.setStyleSheet("background-color: #0a0100;")
+
+        self.input_field.setGeometry(200,130,200,50)
+        
     
+        
     def start_gui():
         app = QApplication(sys.argv)
         window = MainWindow()

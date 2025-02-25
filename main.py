@@ -22,7 +22,7 @@ class Main:
         dict_data.update(data[data_list[1]])
         Main.weather_data = dict_data
     
-    def build_gui(weather) -> None:
+    def build_gui(weather,self) -> None:
         print(f"Aktuelles Wetter für {Main.user_input}".center(48))
         print(f"************************************************")
         print(f"Wetter: {weather["description"]}")
