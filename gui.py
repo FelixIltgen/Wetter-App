@@ -24,7 +24,8 @@ class MainWindow(QMainWindow):
         self.input_field = QLineEdit("Herbolzheim",self)
         self.button_search = QPushButton("Send",self)
         self.weather_pic = QLabel(self)
-        #self.pixmap = QPixmap("")=> Kann glaube ichauch erst in funktion erstellt werden
+        self.pixmap = QPixmap("")
+        self.pixmap
         self.output_label = QLabel(self)
         
 
@@ -42,7 +43,6 @@ class MainWindow(QMainWindow):
                                            "text-decoration: underline;")
         self.weather_pic.setGeometry(0,0,300,300)
         self.weather_pic.setGeometry((self.width()-self.weather_pic.width())//2,(self.height()-self.weather_pic.height())//2-50,self.weather_pic.width(),self.weather_pic.height())
-        self.weather_pic.setStyleSheet("background-color: black;")
 
         self.input_field.setGeometry(150,130,200,50)
         self.button_search.setGeometry(350,130,100,50)
@@ -64,15 +64,60 @@ class MainWindow(QMainWindow):
         Minimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°
         Luftfeuchtigkeit: {self.weather_data["humidity"]} %"""
         self.output_label.setText(string)
+        self.select_weather_pic()
     
     def extrtact_weather_data(self,data=dict) -> dict:
-        data_list = [new_data for new_data in data if new_data == "weather" or new_data =="main"]
+        data_list = [new_data for new_data in data if new_data == "weather" or new_data =="main" or new_data == "id"]
         dict_data = {k: v for (k,v) in data[data_list[0]][0].items()}
         dict_data.update(data[data_list[1]])
         self.weather_data = dict_data
     
     def select_weather_pic(self):
-        pass
+        if(200 <= self.weather_data["id"] <= 232):
+            pixmap = QPixmap("pictures//lightning-bolt-.png")
+            self.weather_pic.setPixmap(pixmap)
+            self.weather_pic.setScaledContents(True)
+            
+        elif(300 <= self.weather_data["id"] <= 321 or 520 <= self.weather_data["id"] <= 531):
+            pixmap = QPixmap("pictures//heavy-rain.png")
+            self.weather_pic.setPixmap(pixmap)
+            self.weather_pic.setScaledContents(True)
+            
+        elif (500 <= self.weather_data["id"] <=504):
+            pixmap = QPixmap("pictures//rain.png")
+            self.weather_pic.setPixmap(pixmap)
+            self.weather_pic.setScaledContents(True)
+            
+        elif(self.weather_data["id"]== 511 or 600<= self.weather_data["id"]<= 622):
+            pixmap = QPixmap("pictures//snow.png")
+            self.weather_pic.setPixmap(pixmap)
+            self.weather_pic.setScaledContents(True)
+            
+        elif(701 <= self.weather_data["id"] <= 781):
+            pixmap = QPixmap("pictures//haze.png")
+            self.weather_pic.setPixmap(pixmap)
+            self.weather_pic.setScaledContents(True)
+            
+        elif(self.weather_data["id"] == 800):
+            pixmap = QPixmap("pictures//sun.png")
+            self.weather_pic.setPixmap(pixmap)
+            self.weather_pic.setScaledContents(True)
+            
+        elif(self.weather_data["id"] == 801):
+            pixmap = QPixmap("pictures//cloudy.png")
+            self.weather_pic.setPixmap(pixmap)
+            self.weather_pic.setScaledContents(True)
+            
+        elif(self.weather_data["id"] == 802):
+            pixmap = QPixmap("pictures//cloud-computing.png")
+            self.weather_pic.setPixmap(pixmap)
+            self.weather_pic.setScaledContents(True)
+            
+        elif(803 <= self.weather_data["id"] <= 804):
+            pixmap = QPixmap("pictures//clouds.png")
+            self.weather_pic.setPixmap(pixmap)
+            self.weather_pic.setScaledContents(True)
+    
       
     def start_gui():
         app = QApplication(sys.argv)

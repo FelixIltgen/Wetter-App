@@ -17,7 +17,7 @@ class Main:
         Main.build_gui(Main.weather_data)
        
     def extrtact_weather_data(data=dict) -> dict:
-        data_list = [new_data for new_data in data if new_data == "weather" or new_data =="main"]
+        data_list = [new_data for new_data in data if new_data == "weather" or new_data =="main" ]
         dict_data = {k: v for (k,v) in data[data_list[0]][0].items()}
         dict_data.update(data[data_list[1]])
         Main.weather_data = dict_data
