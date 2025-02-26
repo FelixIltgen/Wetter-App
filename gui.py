@@ -33,8 +33,10 @@ class MainWindow(QMainWindow):
         
 
     def init_ui(self):
-
-        self.headline.setFont(QFont("Arial",40))
+        #Set Object ID
+        self.setObjectName("MainWindow")
+        self.headline.setObjectName("headline")
+        
         self.headline.setGeometry(0, 0, self.width(), 100)
         #self.headline.setAlignment(Qt.AlignHCenter | Qt.AlignVCenters)
         self.headline.setStyleSheet("color: #292929;"
