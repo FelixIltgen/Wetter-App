@@ -70,6 +70,9 @@ class MainWindow(QMainWindow):
         dict_data = {k: v for (k,v) in data[data_list[0]][0].items()}
         dict_data.update(data[data_list[1]])
         self.weather_data = dict_data
+    
+    def select_weather_pic(self):
+        pass
       
     def start_gui():
         app = QApplication(sys.argv)
