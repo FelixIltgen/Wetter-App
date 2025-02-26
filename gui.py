@@ -1,7 +1,7 @@
 from weather_api import *
 from style_sheet import *
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout
 from PyQt5.QtGui import QIcon, QFont, QPixmap
 from PyQt5.QtCore import Qt
 
@@ -18,14 +18,15 @@ class MainWindow(QMainWindow):
         self.move(qtRectangle.topLeft())
 
         self.headline = QLabel("Überschrift",self)
-        self.input_field = QLineEdit("Test", self)
-        self.button_search = QPushButton("Send", self)
+        self.input_field = QLineEdit("Test",self)
+        self.button_search = QPushButton("Send",self)
         self.weather_pic = QLabel(self)
         #self.pixmap = QPixmap("")=> Kann glaube ichauch erst in funktion erstellt werden
         self.output_label = QLabel(self)
+        
 
         self.init_ui()
-        self.setStyleSheet(Style_Sheet.css_content)
+        
 
     def init_ui(self):
 
@@ -40,10 +41,12 @@ class MainWindow(QMainWindow):
         self.weather_pic.setGeometry((self.width()-self.weather_pic.width())//2,(self.height()-self.weather_pic.height())//2-50,self.weather_pic.width(),self.weather_pic.height())
         self.weather_pic.setStyleSheet("background-color: black;")
 
-        self.input_field.setGeometry(200,130,200,50)
-        self.button_search.setGeometry(400,130,100,50)
+        self.input_field.setGeometry(150,130,200,50)
+        self.button_search.setGeometry(350,130,100,50)
+        self.output_label.setGeometry(100,550,400,200)
+        self.output_label.setObjectName("output_label")
         
-    
+        self.setStyleSheet(Style_Sheet.css_content)
         
     def start_gui():
         app = QApplication(sys.argv)
