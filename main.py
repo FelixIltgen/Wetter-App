@@ -25,7 +25,7 @@ class Main:
     def build_gui(weather,self) -> None:
         print(f"Aktuelles Wetter für {Main.user_input}".center(48))
         print(f"************************************************")
-        print(f"Wetter: {weather["description"]}")
+        print(f"Wetter: {weather["description"]}" )
         print(f"Aktuelle Temperatur: {weather["temp"]:.1f} C° | Gefühlt: {weather["feels_like"]:.1f} C°")
         print(f"Minimal: {weather["temp_min"]:.1f} C° und maximal {weather["temp_max"]:.1f} C°")
         print(f"Luftfeuchtigkeit: {weather["humidity"]} %")

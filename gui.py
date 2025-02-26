@@ -6,6 +6,9 @@ from PyQt5.QtGui import QIcon, QFont, QPixmap
 from PyQt5.QtCore import Qt
 
 class MainWindow(QMainWindow):
+    user_input = ""
+    weather_data = {}
+    
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Wetter App")
@@ -18,7 +21,7 @@ class MainWindow(QMainWindow):
         self.move(qtRectangle.topLeft())
 
         self.headline = QLabel("Überschrift",self)
-        self.input_field = QLineEdit("Test",self)
+        self.input_field = QLineEdit("Herbolzheim",self)
         self.button_search = QPushButton("Send",self)
         self.weather_pic = QLabel(self)
         #self.pixmap = QPixmap("")=> Kann glaube ichauch erst in funktion erstellt werden
@@ -46,8 +49,28 @@ class MainWindow(QMainWindow):
         self.output_label.setGeometry(100,550,400,200)
         self.output_label.setObjectName("output_label")
         
+        self.button_search.clicked.connect(self.get_user_input_start_api)
+        
         self.setStyleSheet(Style_Sheet.css_content)
         
+    def get_user_input_start_api(self):
+        self.user_input = self.input_field.text()
+        self.weather_data = Weather_api.convert_name_in_location(self.user_input)
+        self.extrtact_weather_data(self.weather_data)
+        
+        string = f"""Aktuelles Wetter für {self.user_input}
+        Wetter: {self.weather_data["description"]}
+        Aktuelle Temperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°
+        Minimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°
+        Luftfeuchtigkeit: {self.weather_data["humidity"]} %"""
+        self.output_label.setText(string)
+    
+    def extrtact_weather_data(self,data=dict) -> dict:
+        data_list = [new_data for new_data in data if new_data == "weather" or new_data =="main"]
+        dict_data = {k: v for (k,v) in data[data_list[0]][0].items()}
+        dict_data.update(data[data_list[1]])
+        self.weather_data = dict_data
+      
     def start_gui():
         app = QApplication(sys.argv)
         window = MainWindow()
