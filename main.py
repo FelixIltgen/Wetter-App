@@ -9,7 +9,7 @@ class Main:
     user_input = ""
     
     def main() -> None:
-        MainWindow.start_gui()
+        WeatherApp.start_gui()
         print("Wilkommen bei der Wetter-App")
         print("****************************")
         Main.ask_for_user_input()

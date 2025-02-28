@@ -5,53 +5,59 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QDesktop
 from PyQt5.QtGui import QIcon, QFont, QPixmap
 from PyQt5.QtCore import Qt
 
-class MainWindow(QMainWindow):
+class WeatherApp(QWidget):
     user_input = ""
     weather_data = {}
     
     def __init__(self):
         super().__init__()
+        
+        #Initialise GUI components
+        self.input_field = QLineEdit("Herbolzheim",self)
+        self.button_search = QPushButton("Wetter suchen 🔎",self)
+        self.weather_pic = QLabel(self)
+        self.pixmap = QPixmap("")
+        self.output_label = QLabel(self)
+        
+        self.init_ui()
+        
+    def init_ui(self):
+        
+        #Adjust name and icon of the Window
         self.setWindowTitle("Wetter App")
         self.setWindowIcon(QIcon("pictures//app_icon.png"))
-        self.setGeometry(0,0,600,800)
+        self.setGeometry(0,0,500,500)
         
+        #Window into the center of the screen
         qtRectangle = self.frameGeometry()
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
         self.move(qtRectangle.topLeft())
-
-        self.headline = QLabel("Überschrift",self)
-        self.input_field = QLineEdit("Herbolzheim",self)
-        self.button_search = QPushButton("Send",self)
-        self.weather_pic = QLabel(self)
-        self.pixmap = QPixmap("")
-        self.pixmap
-        self.output_label = QLabel(self)
         
-
-        self.init_ui()
+        #
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.input_field)
+        vbox.addWidget(self.button_search)
+        vbox.addWidget(self.weather_pic)
+        vbox.addWidget(self.output_label)
         
-
-    def init_ui(self):
-        #Set Object ID
-        self.setObjectName("MainWindow")
-        self.headline.setObjectName("headline")
+        self.setLayout(vbox)
         
-        self.headline.setGeometry(0, 0, self.width(), 100)
-        #self.headline.setAlignment(Qt.AlignHCenter | Qt.AlignVCenters)
-        self.headline.setStyleSheet("color: #292929;"
-                                           "background-color: #6fdcf7;"
-                                           "font-weight: bold;"
-                                           "text-decoration: underline;")
-        self.weather_pic.setGeometry(0,0,300,300)
-        self.weather_pic.setGeometry((self.width()-self.weather_pic.width())//2,(self.height()-self.weather_pic.height())//2-50,self.weather_pic.width(),self.weather_pic.height())
-
-        self.input_field.setGeometry(150,130,200,50)
-        self.button_search.setGeometry(350,130,100,50)
-        self.output_label.setGeometry(100,550,400,200)
+        #self.headline.setAlignment(Qt.AlignCenter)
+        
+        #Set Window name (CSS ID)
+        self.setObjectName("weatherApp")
+        
+        #Set Widgets name (CSS ID)
+        self.input_field.setObjectName("input_field")
+        self.button_search.setObjectName("button_search")
         self.output_label.setObjectName("output_label")
         
+        #Connect event to the Button
         self.button_search.clicked.connect(self.get_user_input_start_api)
+        
+        #self.output_label.setGeometry(0,0,400,200)
+        self.weather_pic.setGeometry(0,0,300,300)
         
         self.setStyleSheet(Style_Sheet.css_content)
         
@@ -65,6 +71,7 @@ class MainWindow(QMainWindow):
         Aktuelle Temperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°
         Minimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°
         Luftfeuchtigkeit: {self.weather_data["humidity"]} %"""
+        
         self.output_label.setText(string)
         self.select_weather_pic()
     
@@ -123,6 +130,6 @@ class MainWindow(QMainWindow):
       
     def start_gui():
         app = QApplication(sys.argv)
-        window = MainWindow()
+        window = WeatherApp()
         window.show()
         sys.exit(app.exec_())

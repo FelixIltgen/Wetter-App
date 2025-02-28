@@ -2,24 +2,34 @@
 class Style_Sheet:
     
     css_content = """
-    QMainWindow#MainWindow{
-        background-color: #92e7fc;
+    #weatherApp{
+        background-color: #ffd666;
     }
-    QLabel#headline{
-        font-family: Arial;
-        font-size; 40px;
+    #input_field, button_search{   
+        border: 3px solid black;
+        border-radius: 20px;
+        padding: 10px 15px 10px 15px;
+        margin: 10px 50px 10px 50px;
+        font-family: Comic Sans MS;
         font-weight: bold;
-        background-color: #6fdcf7;
-        color: #292929;
+        font-size: 20px
+    }
+    #button_search{
+        border: 3px solid black;
+        border-radius: 20px;
+        padding: 10px 15px 10px 15px;
+        margin: 10px 50px 10px 50px;
+        font-family: Comic Sans MS;
+        font-weight: bold;
+        font-size: 20px;
+        background-color:rgb(246, 186, 23);
+    }
     
-        
+    #button_search:hover {
+        background-color:rgba(246, 187, 23, 0);
     }
-    QLineEdit{    
-        border: 2px solid black;
-        background-color: green;
-    }
+    
     #output_label{
-        background-color: green;
         border-radius: 10px;
     }
     
