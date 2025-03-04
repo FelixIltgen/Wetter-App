@@ -4,6 +4,7 @@ class Style_Sheet:
     css_content = """
     #weatherApp{
         background-color: #ffd666;
+        
     }
     #input_field, button_search{   
         border: 3px solid black;

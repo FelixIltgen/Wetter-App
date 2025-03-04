@@ -1,8 +1,8 @@
 from weather_api import *
 from style_sheet import *
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout
-from PyQt5.QtGui import QIcon, QFont, QPixmap
+from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QGraphicsDropShadowEffect
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 
 class WeatherApp(QWidget):
@@ -43,8 +43,6 @@ class WeatherApp(QWidget):
         
         self.setLayout(vbox)
         
-        #self.headline.setAlignment(Qt.AlignCenter)
-        
         #Set Window name (CSS ID)
         self.setObjectName("weatherApp")
         
@@ -55,6 +53,13 @@ class WeatherApp(QWidget):
         
         #Connect event to the Button
         self.button_search.clicked.connect(self.get_user_input_start_api)
+        
+        #Apply shadow to specific widgets
+        for child in self.findChildren(QWidget):
+            if (child.objectName() == "input_field" or child.objectName() == "button_search"):
+                shadow = QGraphicsDropShadowEffect()
+                shadow.setBlurRadius(50)
+                child.setGraphicsEffect(shadow)
         
         #self.output_label.setGeometry(0,0,400,200)
         self.weather_pic.setGeometry(0,0,300,300)
