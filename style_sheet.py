@@ -3,7 +3,10 @@ class Style_Sheet:
     
     css_content = """
     #weatherApp{
-        background-color: #ffd666;
+        background-color: qlineargradient(  x1: 0, y1: 0,
+                                            x2: 0, y2: 1, 
+                                            stop: 0 #000fff, 
+                                            stop: 1 #ff000f );
         
     }
     #input_field, button_search{   
