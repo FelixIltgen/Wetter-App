@@ -52,5 +52,4 @@ if __name__ == "__main__":
 #To do's
 #Richtige Gui
 #Forecast 
-#Responsive
 #Wetterkarte anzeigens => wenn möglich

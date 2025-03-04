@@ -62,7 +62,7 @@ class WeatherApp(QWidget):
                 child.setGraphicsEffect(shadow)
         
         #self.output_label.setGeometry(0,0,400,200)
-        self.weather_pic.setGeometry(0,0,300,300)
+        #self.weather_pic.setGeometry(0,0,100,100)
         
         self.setStyleSheet(Style_Sheet.css_content)
         

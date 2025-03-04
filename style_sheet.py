@@ -5,8 +5,8 @@ class Style_Sheet:
     #weatherApp{
         background-color: qlineargradient(  x1: 0, y1: 0,
                                             x2: 0, y2: 1, 
-                                            stop: 0 #000fff, 
-                                            stop: 1 #ff000f );
+                                            stop: 0 rgb(132, 239, 255), 
+                                            stop: 1 rgb(250, 158, 11) );
         
     }
     #input_field, button_search{   
