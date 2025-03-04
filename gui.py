@@ -131,6 +131,12 @@ class WeatherApp(QWidget):
             pixmap = QPixmap("pictures//clouds.png")
             self.weather_pic.setPixmap(pixmap)
             self.weather_pic.setScaledContents(True)
+        
+        #Apply shadow to all weather pictures
+        weather_shadow = QGraphicsDropShadowEffect()
+        weather_shadow.setBlurRadius(20)
+        self.weather_pic.setGraphicsEffect(weather_shadow)
+        
     
       
     def start_gui():
