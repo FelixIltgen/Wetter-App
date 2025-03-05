@@ -50,6 +50,6 @@ if __name__ == "__main__":
     Main.main()
 
 #To do's
-#Richtige Gui
+#Wetter für Nacht
 #Forecast 
 #Wetterkarte anzeigens => wenn möglich

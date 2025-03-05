@@ -25,6 +25,10 @@ class WeatherApp(QWidget):
         
     def init_ui(self):
         
+        #Adjust name and icon of the Window
+        self.setWindowTitle("Wetter App")
+        self.setWindowIcon(QIcon("pictures//app_icon.png"))
+        
         #Window into the center of the screen
         qtRectangle = self.frameGeometry()
         centerPoint = QDesktopWidget().availableGeometry().center()
@@ -130,10 +134,6 @@ class WeatherApp(QWidget):
         #Change CSS ID and set the changed stylesheet
         self.setObjectName(css_ID)
         self.setStyleSheet(Style_Sheet.css_content)  
-        
-        #Adjust name and icon of the Window
-        self.setWindowTitle("Wetter App")
-        self.setWindowIcon(QIcon("pictures//app_icon.png"))
       
     def start_gui():
         app = QApplication(sys.argv)

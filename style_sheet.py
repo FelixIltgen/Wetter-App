@@ -40,8 +40,7 @@ class Style_Sheet:
         background-color: qlineargradient(  x1: 0, y1: 0,
                                             x2: 0, y2: 1, 
                                             stop: 0 rgb(132, 239, 255), 
-                                            stop: 1 rgb(250, 158, 11) );
-        
+                                            stop: 1 rgb(250, 158, 11) );  
     }
     #input_field, button_search{   
         border: 3px solid black;
