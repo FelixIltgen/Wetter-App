@@ -3,6 +3,9 @@ class Style_Sheet:
     
     css_content = """
     #weatherApp{
+        background-color: #d1be99;
+    }
+    #weatherApp2{
         background-color: qlineargradient(  x1: 0, y1: 0,
                                             x2: 0, y2: 1, 
                                             stop: 0 rgb(132, 239, 255), 
@@ -22,7 +25,7 @@ class Style_Sheet:
         border: 3px solid black;
         border-radius: 20px;
         padding: 10px 15px 10px 15px;
-        margin: 10px 50px 10px 50px;
+        margin: 10px 50px 20px 50px;
         font-family: Comic Sans MS;
         font-weight: bold;
         font-size: 20px;
@@ -35,6 +38,12 @@ class Style_Sheet:
     
     #output_label{
         border-radius: 10px;
+        color: white;
+        font-family: Comic Sans MS;
+        font-size: 25px;
+        background-color: rgba(224, 222, 224, 0.37);
+        padding: 10px;
+        margin: 20px 0px 0px 0px;
     }
     
     

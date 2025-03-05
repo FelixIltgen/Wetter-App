@@ -19,6 +19,8 @@ class WeatherApp(QWidget):
         self.pixmap = QPixmap("")
         self.output_label = QLabel(self)
         
+        self.vbox = QVBoxLayout()
+        
         self.init_ui()
         
     def init_ui(self):
@@ -26,7 +28,6 @@ class WeatherApp(QWidget):
         #Adjust name and icon of the Window
         self.setWindowTitle("Wetter App")
         self.setWindowIcon(QIcon("pictures//app_icon.png"))
-        self.setGeometry(0,0,500,500)
         
         #Window into the center of the screen
         qtRectangle = self.frameGeometry()
@@ -35,13 +36,12 @@ class WeatherApp(QWidget):
         self.move(qtRectangle.topLeft())
         
         #
-        vbox = QVBoxLayout()
-        vbox.addWidget(self.input_field)
-        vbox.addWidget(self.button_search)
-        vbox.addWidget(self.weather_pic)
-        vbox.addWidget(self.output_label)
+        self.vbox.addWidget(self.input_field)
+        self.vbox.addWidget(self.button_search)
+        #vbox.addWidget(self.weather_pic)
+        #vbox.addWidget(self.output_label)
         
-        self.setLayout(vbox)
+        self.setLayout(self.vbox)
         
         #Set Window name (CSS ID)
         self.setObjectName("weatherApp")
@@ -49,7 +49,7 @@ class WeatherApp(QWidget):
         #Set Widgets name (CSS ID)
         self.input_field.setObjectName("input_field")
         self.button_search.setObjectName("button_search")
-        self.output_label.setObjectName("output_label")
+        
         
         #Connect event to the Button
         self.button_search.clicked.connect(self.get_user_input_start_api)
@@ -61,9 +61,6 @@ class WeatherApp(QWidget):
                 shadow.setBlurRadius(50)
                 child.setGraphicsEffect(shadow)
         
-        #self.output_label.setGeometry(0,0,400,200)
-        #self.weather_pic.setGeometry(0,0,100,100)
-        
         self.setStyleSheet(Style_Sheet.css_content)
         
     def get_user_input_start_api(self):
@@ -71,11 +68,19 @@ class WeatherApp(QWidget):
         self.weather_data = Weather_api.convert_name_in_location(self.user_input)
         self.extrtact_weather_data(self.weather_data)
         
-        string = f"""Aktuelles Wetter für {self.user_input}
-        Wetter: {self.weather_data["description"]}
-        Aktuelle Temperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°
-        Minimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°
-        Luftfeuchtigkeit: {self.weather_data["humidity"]} %"""
+        self.output_label.setObjectName("output_label")
+        self.output_label.setAlignment(Qt.AlignCenter)
+        
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(30)
+        self.output_label.setGraphicsEffect(shadow)
+        
+        self.vbox.addWidget(self.weather_pic)
+        self.vbox.addWidget(self.output_label)
+        
+        self.setLayout(self.vbox)
+        
+        string = f"""Aktuelles Wetter für {self.user_input}\nWetter: {self.weather_data["description"]}\nTemperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°\nMinimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°\nLuftfeuchtigkeit: {self.weather_data["humidity"]} %"""
         
         self.output_label.setText(string)
         self.select_weather_pic()
@@ -114,8 +119,10 @@ class WeatherApp(QWidget):
             
         elif(self.weather_data["id"] == 800):
             pixmap = QPixmap("pictures//sun.png")
+            self.setObjectName("weatherApp2")
             self.weather_pic.setPixmap(pixmap)
             self.weather_pic.setScaledContents(True)
+            self.setStyleSheet(Style_Sheet.css_content)
             
         elif(self.weather_data["id"] == 801):
             pixmap = QPixmap("pictures//cloudy.png")
