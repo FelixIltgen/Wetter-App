@@ -2,10 +2,41 @@
 class Style_Sheet:
     
     css_content = """
+    /*Test*/
     #weatherApp{
         background-color: #d1be99;
     }
-    #weatherApp2{
+    #weatherApp_cloud_sun{
+        background-color: qlineargradient(  x1: 0, y1: 0,
+                                            x2: 0, y2: 1, 
+                                            stop: 0 rgb(209, 176, 92), 
+                                            stop: 1 rgb(95, 105, 123) );     
+    }
+    #weatherApp_DarkCloud{
+        background-color: qlineargradient(  x1: 0, y1: 0,
+                                            x2: 0, y2: 1, 
+                                            stop: 0 rgb(135, 151, 172), 
+                                            stop: 1 rgb(61, 68, 81) );     
+    }
+    #weatherApp_LightCloud{
+        background-color: qlineargradient(  x1: 0, y1: 0,
+                                            x2: 0, y2: 1, 
+                                            stop: 0 rgb(210, 210, 210), 
+                                            stop: 1 rgb(95, 106, 126) );     
+    }
+    #weatherApp_Rain{
+        background-color: qlineargradient(  x1: 0, y1: 0,
+                                            x2: 0, y2: 1, 
+                                            stop: 0 rgb(155, 202, 213), 
+                                            stop: 1 rgb(43, 98, 104) );     
+    }
+    #weatherApp_Thunder{
+        background-color: qlineargradient(  x1: 0, y1: 0,
+                                            x2: 0, y2: 1, 
+                                            stop: 0 rgb(180, 180, 180), 
+                                            stop: 1 rgb(49, 49, 48) );
+    }
+    #weatherApp_Sun{
         background-color: qlineargradient(  x1: 0, y1: 0,
                                             x2: 0, y2: 1, 
                                             stop: 0 rgb(132, 239, 255), 

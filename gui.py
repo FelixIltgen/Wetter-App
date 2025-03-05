@@ -25,22 +25,17 @@ class WeatherApp(QWidget):
         
     def init_ui(self):
         
-        #Adjust name and icon of the Window
-        self.setWindowTitle("Wetter App")
-        self.setWindowIcon(QIcon("pictures//app_icon.png"))
-        
         #Window into the center of the screen
         qtRectangle = self.frameGeometry()
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
         self.move(qtRectangle.topLeft())
         
-        #
+        #Add Widgets to Vertical Box Layout
         self.vbox.addWidget(self.input_field)
         self.vbox.addWidget(self.button_search)
-        #vbox.addWidget(self.weather_pic)
-        #vbox.addWidget(self.output_label)
         
+        #Set vertical box layout
         self.setLayout(self.vbox)
         
         #Set Window name (CSS ID)
@@ -92,59 +87,53 @@ class WeatherApp(QWidget):
         self.weather_data = dict_data
     
     def select_weather_pic(self):
+    
         if(200 <= self.weather_data["id"] <= 232):
-            pixmap = QPixmap("pictures//lightning-bolt-.png")
-            self.weather_pic.setPixmap(pixmap)
-            self.weather_pic.setScaledContents(True)
+            self.change_gui_appearance("pictures//lightning-bolt-.png","weatherApp_DarkCloud")
             
         elif(300 <= self.weather_data["id"] <= 321 or 520 <= self.weather_data["id"] <= 531):
-            pixmap = QPixmap("pictures//heavy-rain.png")
-            self.weather_pic.setPixmap(pixmap)
-            self.weather_pic.setScaledContents(True)
+            self.change_gui_appearance("pictures//heavy-rain.png","weatherApp_Rain")
             
         elif (500 <= self.weather_data["id"] <=504):
-            pixmap = QPixmap("pictures//rain.png")
-            self.weather_pic.setPixmap(pixmap)
-            self.weather_pic.setScaledContents(True)
+            self.change_gui_appearance("pictures//rain.png","weatherApp_cloud_sun")
             
         elif(self.weather_data["id"]== 511 or 600<= self.weather_data["id"]<= 622):
-            pixmap = QPixmap("pictures//snow.png")
-            self.weather_pic.setPixmap(pixmap)
-            self.weather_pic.setScaledContents(True)
+            self.change_gui_appearance("pictures//snow.png","weatherApp_LightCloud")
             
         elif(701 <= self.weather_data["id"] <= 781):
-            pixmap = QPixmap("pictures//haze.png")
-            self.weather_pic.setPixmap(pixmap)
-            self.weather_pic.setScaledContents(True)
+            self.change_gui_appearance("pictures//haze.png","weatherApp_cloud_sun")
             
         elif(self.weather_data["id"] == 800):
-            pixmap = QPixmap("pictures//sun.png")
-            self.setObjectName("weatherApp2")
-            self.weather_pic.setPixmap(pixmap)
-            self.weather_pic.setScaledContents(True)
-            self.setStyleSheet(Style_Sheet.css_content)
-            
+            self.change_gui_appearance("pictures//sun.png","weatherApp_Sun")
+                 
         elif(self.weather_data["id"] == 801):
-            pixmap = QPixmap("pictures//cloudy.png")
-            self.weather_pic.setPixmap(pixmap)
-            self.weather_pic.setScaledContents(True)
+            self.change_gui_appearance("pictures//cloudy.png","weatherApp_cloud_sun")
             
         elif(self.weather_data["id"] == 802):
-            pixmap = QPixmap("pictures//cloud-computing.png")
-            self.weather_pic.setPixmap(pixmap)
-            self.weather_pic.setScaledContents(True)
+            self.change_gui_appearance("pictures//cloud-computing.png","weatherApp_LightCloud")
             
         elif(803 <= self.weather_data["id"] <= 804):
-            pixmap = QPixmap("pictures//clouds.png")
-            self.weather_pic.setPixmap(pixmap)
-            self.weather_pic.setScaledContents(True)
-        
+            self.change_gui_appearance("pictures//clouds.png", "weatherApp_DarkCloud")
+            
         #Apply shadow to all weather pictures
         weather_shadow = QGraphicsDropShadowEffect()
         weather_shadow.setBlurRadius(20)
         self.weather_pic.setGraphicsEffect(weather_shadow)
-        
     
+    def change_gui_appearance(self, path=str, css_ID=str):
+            
+        #Inistilaize QPixmap and set pixmap to Qlabel
+        pixmap = QPixmap(path)
+        self.weather_pic.setPixmap(pixmap)
+        self.weather_pic.setScaledContents(True)
+            
+        #Change CSS ID and set the changed stylesheet
+        self.setObjectName(css_ID)
+        self.setStyleSheet(Style_Sheet.css_content)  
+        
+        #Adjust name and icon of the Window
+        self.setWindowTitle("Wetter App")
+        self.setWindowIcon(QIcon("pictures//app_icon.png"))
       
     def start_gui():
         app = QApplication(sys.argv)
