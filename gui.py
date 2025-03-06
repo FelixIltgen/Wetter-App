@@ -81,7 +81,7 @@ class WeatherApp(QWidget):
         self.setLayout(self.vbox)
         
         string = f"""Aktuelles Wetter für {self.user_input}\nWetter: {self.weather_data["description"]}\nTemperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°\nMinimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°\nLuftfeuchtigkeit: {self.weather_data["humidity"]} %"""
-        
+        print(self.is_night())
         self.output_label.setText(string)
         self.select_weather_pic()
         
@@ -93,7 +93,6 @@ class WeatherApp(QWidget):
         dict_data.update(converted_dic)
         dict_data.update(data[data_list[1]])
         self.weather_data = dict_data
-        print(self.weather_data)
     
     def select_weather_pic(self):
     
@@ -142,8 +141,10 @@ class WeatherApp(QWidget):
     
     def is_night(self) -> bool:
         current_time = int(time.time())
-        if(current_time):
-            pass  
+        if(current_time >= self.weather_data["sunrise"] and current_time <= self.weather_data["sunset"]):
+            return False
+        else:
+            return True 
       
     def start_gui():
         app = QApplication(sys.argv)
