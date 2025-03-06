@@ -81,7 +81,6 @@ class WeatherApp(QWidget):
         self.setLayout(self.vbox)
         
         string = f"""Aktuelles Wetter für {self.user_input}\nWetter: {self.weather_data["description"]}\nTemperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°\nMinimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°\nLuftfeuchtigkeit: {self.weather_data["humidity"]} %"""
-        print(self.is_night())
         self.output_label.setText(string)
         self.select_weather_pic()
         
@@ -97,10 +96,10 @@ class WeatherApp(QWidget):
     def select_weather_pic(self):
     
         if(200 <= self.weather_data["id"] <= 232):
-            self.change_gui_appearance("pictures//lightning-bolt-.png","weatherApp_DarkCloud")
+            self.change_gui_appearance("pictures//lightning_bolt.png","weatherApp_DarkCloud")
               
         elif(300 <= self.weather_data["id"] <= 321 or 520 <= self.weather_data["id"] <= 531):
-            self.change_gui_appearance("pictures//heavy-rain.png","weatherApp_Rain")
+            self.change_gui_appearance("pictures//heavy_rain.png","weatherApp_Rain")
             
         elif (500 <= self.weather_data["id"] <=504):
             if(self.is_night()):
@@ -130,7 +129,7 @@ class WeatherApp(QWidget):
                 self.change_gui_appearance("pictures//cloudy.png","weatherApp_cloud_sun")
                 
         elif(self.weather_data["id"] == 802):
-            self.change_gui_appearance("pictures//cloud-computing.png","weatherApp_LightCloud")
+            self.change_gui_appearance("pictures//cloud_computing.png","weatherApp_LightCloud")
             
         elif(803 <= self.weather_data["id"] <= 804):
             self.change_gui_appearance("pictures//clouds.png", "weatherApp_DarkCloud")
