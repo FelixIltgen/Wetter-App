@@ -1,6 +1,7 @@
 from weather_api import *
 from style_sheet import *
 import sys
+import time
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QGraphicsDropShadowEffect
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
@@ -11,7 +12,6 @@ class WeatherApp(QWidget):
     
     def __init__(self):
         super().__init__()
-        
         #Initialise GUI components
         self.input_field = QLineEdit("Herbolzheim",self)
         self.button_search = QPushButton("Wetter suchen 🔎",self)
@@ -65,6 +65,7 @@ class WeatherApp(QWidget):
     def get_user_input_start_api(self):
         self.user_input = self.input_field.text()
         self.weather_data = Weather_api.convert_name_in_location(self.user_input)
+        #print(self.weather_data)
         self.extrtact_weather_data(self.weather_data)
         
         self.output_label.setObjectName("output_label")
@@ -83,12 +84,16 @@ class WeatherApp(QWidget):
         
         self.output_label.setText(string)
         self.select_weather_pic()
+        
     
     def extrtact_weather_data(self,data=dict) -> dict:
-        data_list = [new_data for new_data in data if new_data == "weather" or new_data =="main" or new_data == "id"]
-        dict_data = {k: v for (k,v) in data[data_list[0]][0].items()}
+        data_list = [new_data for new_data in data if new_data == "weather" or new_data =="main" or new_data == "id" or new_data == "sys"]
+        dict_data = data[data_list[2]]
+        converted_dic = {k: v for (k,v) in data[data_list[0]][0].items()}
+        dict_data.update(converted_dic)
         dict_data.update(data[data_list[1]])
         self.weather_data = dict_data
+        print(self.weather_data)
     
     def select_weather_pic(self):
     
@@ -133,7 +138,12 @@ class WeatherApp(QWidget):
             
         #Change CSS ID and set the changed stylesheet
         self.setObjectName(css_ID)
-        self.setStyleSheet(Style_Sheet.css_content)  
+        self.setStyleSheet(Style_Sheet.css_content)
+    
+    def is_night(self) -> bool:
+        current_time = int(time.time())
+        if(current_time):
+            pass  
       
     def start_gui():
         app = QApplication(sys.argv)

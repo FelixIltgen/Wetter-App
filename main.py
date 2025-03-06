@@ -53,3 +53,4 @@ if __name__ == "__main__":
 #Wetter für Nacht
 #Forecast 
 #Wetterkarte anzeigens => wenn möglich
+#Fenster zentrieren
