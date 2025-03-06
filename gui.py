@@ -3,7 +3,7 @@ from style_sheet import *
 import sys
 import time
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QGraphicsDropShadowEffect
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPixmap 
 from PyQt5.QtCore import Qt
 
 class WeatherApp(QWidget):
@@ -28,12 +28,8 @@ class WeatherApp(QWidget):
         #Adjust name and icon of the Window
         self.setWindowTitle("Wetter App")
         self.setWindowIcon(QIcon("pictures//app_icon.png"))
-        
-        #Window into the center of the screen
-        qtRectangle = self.frameGeometry()
-        centerPoint = QDesktopWidget().availableGeometry().center()
-        qtRectangle.moveCenter(centerPoint)
-        self.move(qtRectangle.topLeft())
+        self.setGeometry(0,0,350,200)
+        self.center_window()
         
         #Add Widgets to Vertical Box Layout
         self.vbox.addWidget(self.input_field)
@@ -41,6 +37,8 @@ class WeatherApp(QWidget):
         
         #Set vertical box layout
         self.setLayout(self.vbox)
+        
+        
         
         #Set Window name (CSS ID)
         self.setObjectName("weatherApp")
@@ -59,6 +57,8 @@ class WeatherApp(QWidget):
                 shadow = QGraphicsDropShadowEffect()
                 shadow.setBlurRadius(50)
                 child.setGraphicsEffect(shadow)
+        
+        
         
         self.setStyleSheet(Style_Sheet.css_content)
         
@@ -83,6 +83,9 @@ class WeatherApp(QWidget):
         string = f"""Aktuelles Wetter für {self.user_input}\nWetter: {self.weather_data["description"]}\nTemperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°\nMinimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°\nLuftfeuchtigkeit: {self.weather_data["humidity"]} %"""
         self.output_label.setText(string)
         self.select_weather_pic()
+        self.setGeometry(0,0,550,400)
+        self.center_window()
+        
         
     
     def extrtact_weather_data(self,data=dict) -> dict:
@@ -94,7 +97,6 @@ class WeatherApp(QWidget):
         self.weather_data = dict_data
     
     def select_weather_pic(self):
-    
         if(200 <= self.weather_data["id"] <= 232):
             self.change_gui_appearance("pictures//lightning_bolt.png","weatherApp_DarkCloud")
               
@@ -155,7 +157,15 @@ class WeatherApp(QWidget):
         if(current_time >= self.weather_data["sunrise"] and current_time <= self.weather_data["sunset"]):
             return False
         else:
-            return True 
+            return True
+    
+    def center_window(self):
+        
+        #Window into the center of the screen
+        qtRectangle = self.frameGeometry()
+        centerPoint = QDesktopWidget().availableGeometry().center()
+        qtRectangle.moveCenter(centerPoint)
+        self.move(qtRectangle.topLeft())
       
     def start_gui():
         app = QApplication(sys.argv)

@@ -46,7 +46,7 @@ class Style_Sheet:
         border: 3px solid black;
         border-radius: 20px;
         padding: 10px 15px 10px 15px;
-        margin: 10px 50px 10px 50px;
+        margin: 10px 20px 10px 20px;
         font-family: Comic Sans MS;
         font-weight: bold;
         font-size: 20px
@@ -55,7 +55,7 @@ class Style_Sheet:
         border: 3px solid black;
         border-radius: 20px;
         padding: 10px 15px 10px 15px;
-        margin: 10px 50px 20px 50px;
+        margin: 10px 20px 20px 20px;
         font-family: Comic Sans MS;
         font-weight: bold;
         font-size: 20px;

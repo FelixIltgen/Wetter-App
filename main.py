@@ -50,7 +50,6 @@ if __name__ == "__main__":
     Main.main()
 
 #To do's
-#Wetter für Nacht
 #Forecast 
 #Wetterkarte anzeigens => wenn möglich
-#Fenster zentrieren
+#responsive wetter bild
