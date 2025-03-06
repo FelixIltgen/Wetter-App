@@ -98,25 +98,37 @@ class WeatherApp(QWidget):
     
         if(200 <= self.weather_data["id"] <= 232):
             self.change_gui_appearance("pictures//lightning-bolt-.png","weatherApp_DarkCloud")
-            
+              
         elif(300 <= self.weather_data["id"] <= 321 or 520 <= self.weather_data["id"] <= 531):
             self.change_gui_appearance("pictures//heavy-rain.png","weatherApp_Rain")
             
         elif (500 <= self.weather_data["id"] <=504):
-            self.change_gui_appearance("pictures//rain.png","weatherApp_cloud_sun")
-            
+            if(self.is_night()):
+                self.change_gui_appearance("pictures//rain_night.png","weatherApp_LightCloud")
+            else:
+                self.change_gui_appearance("pictures//rain.png","weatherApp_cloud_sun")
+             
         elif(self.weather_data["id"]== 511 or 600<= self.weather_data["id"]<= 622):
             self.change_gui_appearance("pictures//snow.png","weatherApp_LightCloud")
             
         elif(701 <= self.weather_data["id"] <= 781):
-            self.change_gui_appearance("pictures//haze.png","weatherApp_cloud_sun")
-            
+            if(self.is_night()):
+                self.change_gui_appearance("pictures//haze_night.png","weatherApp_LightCloud")
+            else:
+                self.change_gui_appearance("pictures//haze.png","weatherApp_cloud_sun")
+              
         elif(self.weather_data["id"] == 800):
-            self.change_gui_appearance("pictures//sun.png","weatherApp_Sun")
-                 
+            if(self.is_night()):
+                self.change_gui_appearance("pictures//moon.png","weatherApp_LightCloud")
+            else:
+                self.change_gui_appearance("pictures//sun.png","weatherApp_Sun")
+                    
         elif(self.weather_data["id"] == 801):
-            self.change_gui_appearance("pictures//cloudy.png","weatherApp_cloud_sun")
-            
+            if(self.is_night()):
+                self.change_gui_appearance("pictures//cloudy_night.png","weatherApp_LightCloud")
+            else:
+                self.change_gui_appearance("pictures//cloudy.png","weatherApp_cloud_sun")
+                
         elif(self.weather_data["id"] == 802):
             self.change_gui_appearance("pictures//cloud-computing.png","weatherApp_LightCloud")
             
