@@ -3,7 +3,7 @@ from style_sheet import *
 import sys
 import time
 from datetime import timezone as tz
-from datetime import datetime
+from datetime import datetime, timedelta
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QGraphicsDropShadowEffect
 from PyQt5.QtGui import QIcon, QPixmap 
 from PyQt5.QtCore import Qt
@@ -89,7 +89,7 @@ class WeatherApp(QWidget):
         
         string = f"""Aktuelles Wetter für {self.user_input}\nWetter: {self.weather_data["description"]}\nTemperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°\nMinimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°\nLuftfeuchtigkeit: {self.weather_data["humidity"]} %"""
         self.output_label.setText(string)
-        print(self.get_local_time())
+        self.time_label.setText(self.get_local_time())
         self.select_weather_pic()
         self.setGeometry(0,0,550,400)
         self.center_window()
@@ -169,14 +169,13 @@ class WeatherApp(QWidget):
         else:
             return True
     
-    def get_local_time(self):
+    def get_local_time(self) -> str:
         utc_time = datetime.now(tz.utc)
-        unix_utc_time = utc_time.replace(tzinfo=tz.utc)
-        utc_unix_timestamp = unix_utc_time.timestamp()
-        
+        utc_unix_timestamp = utc_time.timestamp()
+        utc_unix_timestamp = utc_unix_timestamp - 3600
         unix_time_of_location = int(utc_unix_timestamp + self.weather_data["timezone"])
-        time_location = datetime.fromtimestamp(utc_unix_timestamp).strftime("%H:%M")
-        print(time_location)
+        time_location = datetime.fromtimestamp(unix_time_of_location).strftime("%H:%M")
+        return time_location
 
     def center_window(self):
         #Window into the center of the screen
