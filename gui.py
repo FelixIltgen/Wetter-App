@@ -2,7 +2,7 @@ from weather_api import *
 from style_sheet import *
 import sys
 import time
-from datetime import timezone
+from datetime import timezone as tz
 from datetime import datetime
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QGraphicsDropShadowEffect
 from PyQt5.QtGui import QIcon, QPixmap 
@@ -102,7 +102,9 @@ class WeatherApp(QWidget):
         converted_dic = {k: v for (k,v) in data[data_list[0]][0].items()}
         dict_data.update(converted_dic)
         dict_data.update(data[data_list[1]])
+        dict_data["timezone"] = data["timezone"]
         self.weather_data = dict_data
+        print(self.weather_data)
     
     def select_weather_pic(self):
         if(200 <= self.weather_data["id"] <= 232):
@@ -168,11 +170,13 @@ class WeatherApp(QWidget):
             return True
     
     def get_local_time(self):
-        utc_time = datetime.now(timezone.utc)
-        unix_utc_time = utc_time.replace(tzinfo=timezone.utc)
+        utc_time = datetime.now(tz.utc)
+        unix_utc_time = utc_time.replace(tzinfo=tz.utc)
         utc_unix_timestamp = unix_utc_time.timestamp()
         
-        print(int(utc_unix_timestamp))
+        unix_time_of_location = int(utc_unix_timestamp + self.weather_data["timezone"])
+        time_location = datetime.fromtimestamp(utc_unix_timestamp).strftime("%H:%M")
+        print(time_location)
 
     def center_window(self):
         #Window into the center of the screen
