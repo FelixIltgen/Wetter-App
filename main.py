@@ -53,3 +53,5 @@ if __name__ == "__main__":
 #Forecast 
 #Wetterkarte anzeigens => wenn möglich
 #responsive wetter bild
+#Uhrzeit Anzeigen
+#Fehler wenn name des ortes falsch ist

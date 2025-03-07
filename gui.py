@@ -2,6 +2,8 @@ from weather_api import *
 from style_sheet import *
 import sys
 import time
+from datetime import timezone
+from datetime import datetime
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QGraphicsDropShadowEffect
 from PyQt5.QtGui import QIcon, QPixmap 
 from PyQt5.QtCore import Qt
@@ -17,6 +19,7 @@ class WeatherApp(QWidget):
         self.button_search = QPushButton("Wetter suchen 🔎",self)
         self.weather_pic = QLabel(self)
         self.pixmap = QPixmap("")
+        self.time_label = QLabel("19:30 Uhr",self)
         self.output_label = QLabel(self)
         
         self.vbox = QVBoxLayout()
@@ -68,6 +71,9 @@ class WeatherApp(QWidget):
         #print(self.weather_data)
         self.extrtact_weather_data(self.weather_data)
         
+        self.time_label.setObjectName("time_label")
+        self.time_label.setAlignment(Qt.AlignCenter)
+        
         self.output_label.setObjectName("output_label")
         self.output_label.setAlignment(Qt.AlignCenter)
         
@@ -76,12 +82,14 @@ class WeatherApp(QWidget):
         self.output_label.setGraphicsEffect(shadow)
         
         self.vbox.addWidget(self.weather_pic)
+        self.vbox.addWidget(self.time_label)
         self.vbox.addWidget(self.output_label)
         
         self.setLayout(self.vbox)
         
         string = f"""Aktuelles Wetter für {self.user_input}\nWetter: {self.weather_data["description"]}\nTemperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°\nMinimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°\nLuftfeuchtigkeit: {self.weather_data["humidity"]} %"""
         self.output_label.setText(string)
+        print(self.get_local_time())
         self.select_weather_pic()
         self.setGeometry(0,0,550,400)
         self.center_window()
@@ -159,8 +167,14 @@ class WeatherApp(QWidget):
         else:
             return True
     
-    def center_window(self):
+    def get_local_time(self):
+        utc_time = datetime.now(timezone.utc)
+        unix_utc_time = utc_time.replace(tzinfo=timezone.utc)
+        utc_unix_timestamp = unix_utc_time.timestamp()
         
+        print(int(utc_unix_timestamp))
+
+    def center_window(self):
         #Window into the center of the screen
         qtRectangle = self.frameGeometry()
         centerPoint = QDesktopWidget().availableGeometry().center()

@@ -65,6 +65,16 @@ class Style_Sheet:
     #button_search:hover {
         background-color:rgba(246, 187, 23, 0);
     }
+    #time_label{
+        border-radius: 10px;
+        color: white;
+        font-family: Comic Sans MS;
+        font-size: 30px;
+        font-weight: bold;
+        background-color: rgba(224, 222, 224, 0.37);
+        padding: 10px;
+        margin: 20px 0px 0px 0px;
+    }
     
     #output_label{
         border-radius: 10px;
