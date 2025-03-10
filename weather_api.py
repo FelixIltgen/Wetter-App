@@ -22,9 +22,12 @@ class Weather_api:
         response = requests.get(url)
         if(response.status_code == 200):
             response_data = response.json()
-            response_dict = response_data[0] #==> Wirft error wenn Stanndort nicht exsisitiert
-            Weather_api.lat = str(response_dict["lat"])
-            Weather_api.lon = str(response_dict["lon"])
-            return Weather_api.request_current_weather_data()
+            if not response_data:
+                return False
+            else:
+                response_dict = response_data[0] #==> Wirft error wenn Stanndort nicht exsisitiert
+                Weather_api.lat = str(response_dict["lat"])
+                Weather_api.lon = str(response_dict["lon"])
+                return Weather_api.request_current_weather_data()
         else: 
             print(f"Daten konnten nicht gefunden werden! {response.status_code}")

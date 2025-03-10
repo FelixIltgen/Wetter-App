@@ -19,7 +19,7 @@ class WeatherApp(QWidget):
         self.button_search = QPushButton("Wetter suchen 🔎",self)
         self.weather_pic = QLabel(self)
         self.pixmap = QPixmap("")
-        self.time_label = QLabel("19:30 Uhr",self)
+        self.time_label = QLabel(self)
         self.output_label = QLabel(self)
         
         self.vbox = QVBoxLayout()
@@ -68,31 +68,35 @@ class WeatherApp(QWidget):
     def get_user_input_start_api(self):
         self.user_input = self.input_field.text()
         self.weather_data = Weather_api.convert_name_in_location(self.user_input)
-        #print(self.weather_data)
-        self.extrtact_weather_data(self.weather_data)
         
-        self.time_label.setObjectName("time_label")
-        self.time_label.setAlignment(Qt.AlignCenter)
-        
-        self.output_label.setObjectName("output_label")
-        self.output_label.setAlignment(Qt.AlignCenter)
-        
-        shadow = QGraphicsDropShadowEffect()
-        shadow.setBlurRadius(30)
-        self.output_label.setGraphicsEffect(shadow)
-        
-        self.vbox.addWidget(self.weather_pic)
-        self.vbox.addWidget(self.time_label)
-        self.vbox.addWidget(self.output_label)
-        
-        self.setLayout(self.vbox)
-        
-        string = f"""Aktuelles Wetter für {self.user_input}\nWetter: {self.weather_data["description"]}\nTemperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°\nMinimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°\nLuftfeuchtigkeit: {self.weather_data["humidity"]} %"""
-        self.output_label.setText(string)
-        self.time_label.setText(self.get_local_time())
-        self.select_weather_pic()
-        self.setGeometry(0,0,550,400)
-        self.center_window()
+        if(not self.weather_data):
+            print("Daten konnten nicht geladen werden")
+        else:
+            #print(self.weather_data)
+            self.extrtact_weather_data(self.weather_data)
+            
+            self.time_label.setObjectName("time_label")
+            self.time_label.setAlignment(Qt.AlignCenter)
+            
+            self.output_label.setObjectName("output_label")
+            self.output_label.setAlignment(Qt.AlignCenter)
+            
+            shadow = QGraphicsDropShadowEffect()
+            shadow.setBlurRadius(30)
+            self.output_label.setGraphicsEffect(shadow)
+            
+            self.vbox.addWidget(self.weather_pic)
+            self.vbox.addWidget(self.time_label)
+            self.vbox.addWidget(self.output_label)
+            
+            self.setLayout(self.vbox)
+            
+            string = f"""Aktuelles Wetter für {self.user_input}\nWetter: {self.weather_data["description"]}\nTemperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°\nMinimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°\nLuftfeuchtigkeit: {self.weather_data["humidity"]} %"""
+            self.output_label.setText(string)
+            self.time_label.setText(self.get_local_time())
+            self.select_weather_pic()
+            self.setGeometry(0,0,550,400)
+            self.center_window()
         
         
     
@@ -102,7 +106,7 @@ class WeatherApp(QWidget):
         converted_dic = {k: v for (k,v) in data[data_list[0]][0].items()}
         dict_data.update(converted_dic)
         dict_data.update(data[data_list[1]])
-        dict_data["timezone"] = data["timezone"]
+        dict_data["timezone"] = data["timezone"] # type: ignore
         self.weather_data = dict_data
         print(self.weather_data)
     
@@ -164,17 +168,23 @@ class WeatherApp(QWidget):
     
     def is_night(self) -> bool:
         current_time = int(time.time())
-        if(current_time >= self.weather_data["sunrise"] and current_time <= self.weather_data["sunset"]):
+        if(current_time >= self.weather_data["sunrise"] and current_time <= self.weather_data["sunset"]): # type: ignore
             return False
         else:
             return True
     
     def get_local_time(self) -> str:
+        #get current utc time
         utc_time = datetime.now(tz.utc)
+        #convert utc time into unix timestamp
         utc_unix_timestamp = utc_time.timestamp()
+        #subtract time difference between local time and utc time !!
         utc_unix_timestamp = utc_unix_timestamp - 3600
-        unix_time_of_location = int(utc_unix_timestamp + self.weather_data["timezone"])
+        #calculate time of searched location
+        unix_time_of_location = int(utc_unix_timestamp + self.weather_data["timezone"]) # type: ignore
+        #convert calculated unix timestamp into normal time 
         time_location = datetime.fromtimestamp(unix_time_of_location).strftime("%H:%M")
+        time_location = f"{time_location} Uhr"
         return time_location
 
     def center_window(self):
