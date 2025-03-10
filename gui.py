@@ -1,9 +1,12 @@
 from weather_api import *
 from style_sheet import *
-import sys
+
+import sys as syst
 import time
+
 from datetime import timezone as tz
-from datetime import datetime, timedelta
+from datetime import datetime
+
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QGraphicsDropShadowEffect
 from PyQt5.QtGui import QIcon, QPixmap 
 from PyQt5.QtCore import Qt
@@ -66,6 +69,9 @@ class WeatherApp(QWidget):
         self.setStyleSheet(Style_Sheet.css_content)
         
     def get_user_input_start_api(self):
+        self.setGeometry(0,0,550,900)
+        self.center_window()
+        
         self.user_input = self.input_field.text()
         self.weather_data = Weather_api.convert_name_in_location(self.user_input)
         
@@ -74,8 +80,6 @@ class WeatherApp(QWidget):
             self.input_field.setObjectName("input_field_wrong")
             self.setStyleSheet(Style_Sheet.css_content)
         else:
-            self.setGeometry(0,0,550,900)
-            self.center_window()
             
             self.input_field.setObjectName("input_field")
             self.setStyleSheet(Style_Sheet.css_content)
@@ -104,15 +108,12 @@ class WeatherApp(QWidget):
             self.time_label.setText(self.get_local_time())
             self.select_weather_pic()
             
-        
-        
-    
     def extrtact_weather_data(self,data=dict) -> dict:
-        data_list = [new_data for new_data in data if new_data == "weather" or new_data =="main" or new_data == "id" or new_data == "sys"]
-        dict_data = data[data_list[2]]
-        converted_dic = {k: v for (k,v) in data[data_list[0]][0].items()}
+        
+        dict_data = data["sys"] # type: ignore
+        converted_dic = {k: v for (k,v) in data["weather"][0].items()} # type: ignore
         dict_data.update(converted_dic)
-        dict_data.update(data[data_list[1]])
+        dict_data.update(data["main"]) # type: ignore
         dict_data["timezone"] = data["timezone"] # type: ignore
         self.weather_data = dict_data
         print(self.weather_data)
@@ -202,7 +203,7 @@ class WeatherApp(QWidget):
         self.move(qtRectangle.topLeft())
       
     def start_gui():
-        app = QApplication(sys.argv)
+        app = QApplication(syst.argv)
         window = WeatherApp()
         window.show()
-        sys.exit(app.exec_())
+        syst.exit(app.exec_())
