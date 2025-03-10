@@ -8,7 +8,6 @@ class Main:
     def main() -> None:
         WeatherApp.start_gui()
         
-
 if __name__ == "__main__":
     Main.main()
 

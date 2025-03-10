@@ -73,6 +73,7 @@ class WeatherApp(QWidget):
         self.user_input = self.input_field.text()
         #start api request with user input
         self.weather_data = Weather_api.convert_name_in_location(self.user_input)
+        Weather_api.request_forecast()
         
         # check if response is empty
         if(not self.weather_data):
