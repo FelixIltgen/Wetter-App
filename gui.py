@@ -70,8 +70,16 @@ class WeatherApp(QWidget):
         self.weather_data = Weather_api.convert_name_in_location(self.user_input)
         
         if(not self.weather_data):
-            print("Daten konnten nicht geladen werden")
+            
+            self.input_field.setObjectName("input_field_wrong")
+            self.setStyleSheet(Style_Sheet.css_content)
         else:
+            self.setGeometry(0,0,550,900)
+            self.center_window()
+            
+            self.input_field.setObjectName("input_field")
+            self.setStyleSheet(Style_Sheet.css_content)
+            
             #print(self.weather_data)
             self.extrtact_weather_data(self.weather_data)
             
@@ -95,8 +103,7 @@ class WeatherApp(QWidget):
             self.output_label.setText(string)
             self.time_label.setText(self.get_local_time())
             self.select_weather_pic()
-            self.setGeometry(0,0,550,400)
-            self.center_window()
+            
         
         
     

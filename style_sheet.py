@@ -42,7 +42,7 @@ class Style_Sheet:
                                             stop: 0 rgb(132, 239, 255), 
                                             stop: 1 rgb(250, 158, 11) );  
     }
-    #input_field, button_search{   
+    #input_field{   
         border: 3px solid black;
         border-radius: 20px;
         padding: 10px 15px 10px 15px;
@@ -51,6 +51,17 @@ class Style_Sheet:
         font-weight: bold;
         font-size: 20px
     }
+    #input_field_wrong{
+        background-color: #d6746d;
+        border: 3px solid black;
+        border-radius: 20px;
+        padding: 10px 15px 10px 15px;
+        margin: 10px 20px 10px 20px;
+        font-family: Comic Sans MS;
+        font-weight: bold;
+        font-size: 20px
+    }
+    
     #button_search{
         border: 3px solid black;
         border-radius: 20px;
