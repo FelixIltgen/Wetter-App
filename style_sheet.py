@@ -2,7 +2,6 @@
 class Style_Sheet:
     
     css_content = """
-    /*Test*/
     #weatherApp{
         background-color: #d1be99;
     }
@@ -96,6 +95,4 @@ class Style_Sheet:
         padding: 10px;
         margin: 20px 0px 0px 0px;
     }
-    
-    
     """

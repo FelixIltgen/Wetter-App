@@ -31,30 +31,27 @@ class WeatherApp(QWidget):
         
     def init_ui(self):
         
-        #Adjust name and icon of the Window
+        #Adjust name and icon of the window
         self.setWindowTitle("Wetter App")
         self.setWindowIcon(QIcon("pictures//app_icon.png"))
         self.setGeometry(0,0,350,200)
         self.center_window()
         
-        #Add Widgets to Vertical Box Layout
+        #Add Widgets to vertical vox layout
         self.vbox.addWidget(self.input_field)
         self.vbox.addWidget(self.button_search)
         
         #Set vertical box layout
         self.setLayout(self.vbox)
         
-        
-        
-        #Set Window name (CSS ID)
+        #Set window name (CSS ID)
         self.setObjectName("weatherApp")
         
-        #Set Widgets name (CSS ID)
+        #Set widgets name (CSS ID)
         self.input_field.setObjectName("input_field")
         self.button_search.setObjectName("button_search")
         
-        
-        #Connect event to the Button
+        #Connect event to the button
         self.button_search.clicked.connect(self.get_user_input_start_api)
         
         #Apply shadow to specific widgets
@@ -64,61 +61,80 @@ class WeatherApp(QWidget):
                 shadow.setBlurRadius(50)
                 child.setGraphicsEffect(shadow)
         
-        
-        
+        #Set the sytlesheet for all components
         self.setStyleSheet(Style_Sheet.css_content)
         
     def get_user_input_start_api(self):
+        #Set inital window size and center window
         self.setGeometry(0,0,550,900)
         self.center_window()
         
+        #Convert user input into string
         self.user_input = self.input_field.text()
+        #start api request with user input
         self.weather_data = Weather_api.convert_name_in_location(self.user_input)
         
+        # check if response is empty
         if(not self.weather_data):
             
+            #set diffrent css style
             self.input_field.setObjectName("input_field_wrong")
             self.setStyleSheet(Style_Sheet.css_content)
         else:
-            
+            #Allways set object name and stylesheet
             self.input_field.setObjectName("input_field")
             self.setStyleSheet(Style_Sheet.css_content)
             
-            #print(self.weather_data)
+            #Extract necessary data from response object
             self.extrtact_weather_data(self.weather_data)
             
+            #Set Object names and center content
             self.time_label.setObjectName("time_label")
             self.time_label.setAlignment(Qt.AlignCenter)
             
             self.output_label.setObjectName("output_label")
             self.output_label.setAlignment(Qt.AlignCenter)
             
+            #Apply shadow to the output label
             shadow = QGraphicsDropShadowEffect()
             shadow.setBlurRadius(30)
             self.output_label.setGraphicsEffect(shadow)
             
+            #Add remaining widgets to the vertical box layout
             self.vbox.addWidget(self.weather_pic)
             self.vbox.addWidget(self.time_label)
             self.vbox.addWidget(self.output_label)
             
+            #Set vertical box layout
             self.setLayout(self.vbox)
             
+            #Construct the output string
             string = f"""Aktuelles Wetter für {self.user_input}\nWetter: {self.weather_data["description"]}\nTemperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°\nMinimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°\nLuftfeuchtigkeit: {self.weather_data["humidity"]} %"""
+            
+            #Set string into output text
             self.output_label.setText(string)
+            
+            #Set calculated time
             self.time_label.setText(self.get_local_time())
             self.select_weather_pic()
             
     def extrtact_weather_data(self,data=dict) -> dict:
-        
+        #Extract system data from response data
         dict_data = data["sys"] # type: ignore
+        
+        #convert response list [{}] into dictonary
         converted_dic = {k: v for (k,v) in data["weather"][0].items()} # type: ignore
+    
+        #Update extracted data 
         dict_data.update(converted_dic)
         dict_data.update(data["main"]) # type: ignore
         dict_data["timezone"] = data["timezone"] # type: ignore
+        
+        #Initialize extracted data
         self.weather_data = dict_data
-        print(self.weather_data)
-    
+        
     def select_weather_pic(self):
+        #Selcet correct weather picture based on retrieved weather codes 
         if(200 <= self.weather_data["id"] <= 232):
             self.change_gui_appearance("pictures//lightning_bolt.png","weatherApp_DarkCloud")
               
@@ -126,6 +142,7 @@ class WeatherApp(QWidget):
             self.change_gui_appearance("pictures//heavy_rain.png","weatherApp_Rain")
             
         elif (500 <= self.weather_data["id"] <=504):
+            # check if neight mode picture is necessary
             if(self.is_night()):
                 self.change_gui_appearance("pictures//rain_night.png","weatherApp_LightCloud")
             else:
@@ -165,9 +182,10 @@ class WeatherApp(QWidget):
     
     def change_gui_appearance(self, path=str, css_ID=str):
             
-        #Inistilaize QPixmap and set pixmap to Qlabel
+        #Initialize QPixmap and set pixmap to Qlabel
         pixmap = QPixmap(path)
         self.weather_pic.setPixmap(pixmap)
+        #Scale Pixmap to the size of the Qlabel
         self.weather_pic.setScaledContents(True)
             
         #Change CSS ID and set the changed stylesheet
@@ -175,24 +193,27 @@ class WeatherApp(QWidget):
         self.setStyleSheet(Style_Sheet.css_content)
     
     def is_night(self) -> bool:
+        #Get current time in unix format
         current_time = int(time.time())
+        #Check if current time lies between sunrise and sunset of requested location
         if(current_time >= self.weather_data["sunrise"] and current_time <= self.weather_data["sunset"]): # type: ignore
             return False
         else:
             return True
     
     def get_local_time(self) -> str:
-        #get current utc time
+        #Get current utc time
         utc_time = datetime.now(tz.utc)
-        #convert utc time into unix timestamp
+        #Convert utc time into unix timestamp
         utc_unix_timestamp = utc_time.timestamp()
-        #subtract time difference between local time and utc time !!
-        utc_unix_timestamp = utc_unix_timestamp - 3600
-        #calculate time of searched location
+        #Subtract time difference between local time and utc time
+        utc_unix_timestamp = utc_unix_timestamp - 3600#!Only CET-Times
+        #Calculate time of searched location
         unix_time_of_location = int(utc_unix_timestamp + self.weather_data["timezone"]) # type: ignore
-        #convert calculated unix timestamp into normal time 
+        #Convert calculated unix timestamp into normal time 
         time_location = datetime.fromtimestamp(unix_time_of_location).strftime("%H:%M")
         time_location = f"{time_location} Uhr"
+        
         return time_location
 
     def center_window(self):
