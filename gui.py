@@ -114,7 +114,6 @@ class WeatherApp(QWidget):
             
             #Set vertical box layout
             self.setLayout(self.vbox)
-            
             #Construct the output string
             string = f"""Aktuelles Wetter für {self.user_input}\nWetter: {self.weather_data["description"]}\nTemperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°\nMinimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°\nLuftfeuchtigkeit: {self.weather_data["humidity"]} %"""
             
@@ -230,14 +229,20 @@ class WeatherApp(QWidget):
             five_day_data.append(dic)
         
         for dic in five_day_data:
-            nessesary_data = {}
+            necessary_data = {}
             converted_dic = {k: v for (k,v) in dic["weather"][0].items()} # type: ignore
-            nessesary_data.update(converted_dic)
-            nessesary_data.update(dic["main"])
-            nessesary_data["dt"] = dic["dt"]
+            necessary_data.update(converted_dic)
+            necessary_data.update(dic["main"])
+            necessary_data["dt"] = dic["dt"]
             
-            time_string_date = datetime.fromtimestamp(nessesary_data["dt"]).strftime("%d.%m.%Y")
-            time_string_time = datetime.fromtimestamp(nessesary_data["dt"]).strftime("%H:%M")
+            time_string_date = datetime.fromtimestamp(necessary_data["dt"]).strftime("%d.%m.%Y")
+            time_string_time = datetime.fromtimestamp(necessary_data["dt"]).strftime("%H:%M")
+            
+            print(f"Wetter am {time_string_date} um {time_string_time}")
+            print("")
+            print(f"Temperatur: {necessary_data["temp"]} C°")
+            print(f"{necessary_data["description"]} Icon: {necessary_data["id"]}")
+            print("****************************************")
             
         
         
