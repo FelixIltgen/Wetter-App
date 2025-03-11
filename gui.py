@@ -3,6 +3,7 @@ from style_sheet import *
 
 import sys as syst
 import time
+import json
 
 from datetime import timezone as tz
 from datetime import datetime
@@ -14,6 +15,7 @@ from PyQt5.QtCore import Qt
 class WeatherApp(QWidget):
     user_input = ""
     weather_data = {}
+    forecast_data = {}
     
     def __init__(self):
         super().__init__()
@@ -73,9 +75,13 @@ class WeatherApp(QWidget):
         self.user_input = self.input_field.text()
         #start api request with user input
         self.weather_data = Weather_api.convert_name_in_location(self.user_input)
-        Weather_api.request_forecast()
+        self.forecast_data = Weather_api.request_forecast()
+        #print(self.forecast_data)
+        #print(json.dumps(self.forecast_data,indent=4))
+        self.display_forecast()
         
-        # check if response is empty
+        
+        #check if response is empty
         if(not self.weather_data):
             
             #set diffrent css style
@@ -216,6 +222,15 @@ class WeatherApp(QWidget):
         time_location = f"{time_location} Uhr"
         
         return time_location
+    
+    def display_forecast(self):
+        five_day_list = self.forecast_data["list"]
+        five_day_data = []
+        for dic in five_day_list[::8]:
+            five_day_data.append(dic)
+        else:
+            print (five_day_data)
+        
 
     def center_window(self):
         #Window into the center of the screen

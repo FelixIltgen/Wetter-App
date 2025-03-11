@@ -12,4 +12,4 @@ if __name__ == "__main__":
     Main.main()
 
 #To do's
-#responsive wetter bild
+#Daten für die nächsten stunden Auswerten
