@@ -61,7 +61,7 @@ class Style_Sheet:
         font-size: 20px
     }
     
-    #button_search{
+    #button_search, #button_forecast{
         border: 3px solid black;
         border-radius: 20px;
         padding: 10px 15px 10px 15px;
@@ -73,6 +73,9 @@ class Style_Sheet:
     }
     
     #button_search:hover {
+        background-color:rgba(246, 187, 23, 0);
+    }
+    #button_forecast:hover {
         background-color:rgba(246, 187, 23, 0);
     }
     #time_label{

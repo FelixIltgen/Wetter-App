@@ -26,6 +26,7 @@ class WeatherApp(QWidget):
         self.pixmap = QPixmap("")
         self.time_label = QLabel(self)
         self.output_label = QLabel(self)
+        self.button_forecast = QPushButton()
         
         self.vbox = QVBoxLayout()
         
@@ -68,7 +69,7 @@ class WeatherApp(QWidget):
         
     def get_user_input_start_api(self):
         #Set inital window size and center window
-        self.setGeometry(0,0,550,900)
+        self.setGeometry(0,0,550,950)
         self.center_window()
         
         #Convert user input into string
@@ -107,10 +108,15 @@ class WeatherApp(QWidget):
             shadow.setBlurRadius(30)
             self.output_label.setGraphicsEffect(shadow)
             
+            #Apply Text content & CSS ID to the forecast button
+            self.button_forecast.setText("Wetterbericht")
+            self.button_forecast.setObjectName("button_forecast")
+            
             #Add remaining widgets to the vertical box layout
             self.vbox.addWidget(self.weather_pic)
             self.vbox.addWidget(self.time_label)
             self.vbox.addWidget(self.output_label)
+            self.vbox.addWidget(self.button_forecast)
             
             #Set vertical box layout
             self.setLayout(self.vbox)
@@ -240,19 +246,10 @@ class WeatherApp(QWidget):
             
             print(f"Wetter am {time_string_date} um {time_string_time}")
             print("")
-            print(f"Temperatur: {necessary_data["temp"]} C°")
+            print(f"Temperatur: {necessary_data["temp"]:.1f} C°")
             print(f"{necessary_data["description"]} Icon: {necessary_data["id"]}")
             print("****************************************")
             
-        
-        
-        
-        
-        
-            
-            
-        
-
     def center_window(self):
         #Window into the center of the screen
         qtRectangle = self.frameGeometry()
