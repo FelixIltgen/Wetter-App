@@ -228,8 +228,24 @@ class WeatherApp(QWidget):
         five_day_data = []
         for dic in five_day_list[::8]:
             five_day_data.append(dic)
-        else:
-            print (five_day_data)
+        
+        for dic in five_day_data:
+            nessesary_data = {}
+            converted_dic = {k: v for (k,v) in dic["weather"][0].items()} # type: ignore
+            nessesary_data.update(converted_dic)
+            nessesary_data.update(dic["main"])
+            nessesary_data["dt"] = dic["dt"]
+            
+            time_string_date = datetime.fromtimestamp(nessesary_data["dt"]).strftime("%d.%m.%Y")
+            time_string_time = datetime.fromtimestamp(nessesary_data["dt"]).strftime("%H:%M")
+            
+        
+        
+        
+        
+        
+            
+            
         
 
     def center_window(self):
