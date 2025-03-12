@@ -7,7 +7,7 @@ import time
 from datetime import timezone as tz
 from datetime import datetime
 
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QGraphicsDropShadowEffect, QDialog
+from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QGridLayout, QGraphicsDropShadowEffect, QDialog, QGroupBox
 from PyQt5.QtGui import QIcon, QPixmap 
 from PyQt5.QtCore import Qt, QRect
 from PyQt5 import QtWidgets
@@ -36,16 +36,11 @@ class WeatherApp(QDialog):
         
     def init_ui(self):
     
-        widget.setGeometry(0,0,350,200)
+        #Adjust name and icon of the window
+        widget.setGeometry(0,0,350,0)
         self.center_window()
         widget.setWindowTitle("Wetter App")
         widget.setWindowIcon(QIcon("pictures//app_icon.png"))
-        
-        #Adjust name and icon of the window
-        self.setWindowTitle("Wetter App")
-        self.setWindowIcon(QIcon("pictures//app_icon.png"))
-        self.setGeometry(0,0,350,200)
-        self.center_window()
         
         #Add Widgets to vertical vox layout
         self.vbox.addWidget(self.input_field)
@@ -76,7 +71,7 @@ class WeatherApp(QDialog):
         
     def get_user_input_start_api(self):
         #Set inital window size and center window
-        #widget.setGeometry(0,0,550,1100)
+        widget.setGeometry(0,0,300,850)
         self.center_window()
         #Convert user input into string
         self.user_input = self.input_field.text()
@@ -157,7 +152,7 @@ class WeatherApp(QDialog):
         self.weather_data = dict_data
         
     def select_weather_pic(self):
-        #self.weather_pic.setGeometry(0,0,200,200)
+
         #Selcet correct weather picture based on retrieved weather codes 
         if(200 <= self.weather_data["id"] <= 232):
             self.change_gui_appearance("pictures//lightning_bolt.png","weatherApp_DarkCloud")
@@ -170,7 +165,7 @@ class WeatherApp(QDialog):
             if(self.is_night()):
                 self.change_gui_appearance("pictures//rain_night.png","weatherApp_LightCloud")
             else:
-                self.change_gui_appearance("pictures//storm.png","weatherApp_cloud_sun")
+                self.change_gui_appearance("pictures//rain.png","weatherApp_cloud_sun")
              
         elif(self.weather_data["id"]== 511 or 600<= self.weather_data["id"]<= 622):
             self.change_gui_appearance("pictures//snow.png","weatherApp_LightCloud")
@@ -270,6 +265,8 @@ class WeatherApp(QDialog):
     
     def switch_screen(self):
         print("Screen Zwei")
+        screen_two = Screen_two()
+        widget.addWidget(screen_two)
         widget.setCurrentIndex(widget.currentIndex()+1)
 
 class Screen_two(QDialog):
@@ -279,25 +276,51 @@ class Screen_two(QDialog):
         self.load_UI()
         
     def load_UI(self):
-        self.test_label = QLabel("Test",self)
-        self.test_button = QPushButton("Test",self)
-        self.test_button.clicked.connect(self.switch_screen)
-        self.picture = QLabel(self)
-        self.picture.setGeometry(0,0,100,100)
-        self.pixmap = QPixmap("pictures//clouds.png")
-        self.picture.setPixmap(self.pixmap)
-        self.picture.setScaledContents(True)
-          
+        self.vbox = QVBoxLayout()
+        self.test_button = QPushButton("Zurück",self)
+        self.test_button.setObjectName("button_back")
+        self.setObjectName("weatherApp")
+
+        for i in range(5):
+            self.creat_layout_components()
+            self.box.setObjectName("test_label")
+            self.vbox.addWidget(self.box)
+        else:
+            self.vbox.addWidget(self.test_button)
+            self.setLayout(self.vbox)
+            self.test_button.clicked.connect(self.switch_screen)
+            self.setStyleSheet(Style_Sheet.css_content)
+        
+    def creat_layout_components(self):
+        self.box = QGroupBox()
+        hbox = QHBoxLayout()
+        vbox = QVBoxLayout()
+        weather_pic = QLabel("Wetterbild")
+        weather_date = QLabel("Datum")
+        weather_info = QLabel("Wetterinformation")
+        weather_temp = QLabel("Wettertemperatur")
+        content_list = [weather_date,weather_info,weather_temp]
+        hbox.addWidget(weather_pic,4)
+        weather_pic.setObjectName("content")
+        
+        for content in content_list:
+            content.setObjectName("content")
+            vbox.addWidget(content)
+        else:
+            hbox.addLayout(vbox,12)
+            
+        self.box.setLayout(hbox)
+        
+            
     def switch_screen(self):
         widget.setCurrentIndex(widget.currentIndex()-1)
+        
  
 if __name__ == "__main__":
     app = QApplication(syst.argv)
     widget = QtWidgets.QStackedWidget()
     window = WeatherApp()
-    screen_two = Screen_two()
     widget.addWidget(window)
-    widget.addWidget(screen_two)
     widget.show()
     syst.exit(app.exec_())      
     

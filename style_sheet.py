@@ -61,7 +61,7 @@ class Style_Sheet:
         font-size: 20px
     }
     
-    #button_search, #button_forecast{
+    #button_search, #button_forecast, #button_back{
         border: 3px solid black;
         border-radius: 20px;
         padding: 10px 15px 10px 15px;
@@ -72,12 +72,10 @@ class Style_Sheet:
         background-color:rgb(246, 186, 23);
     }
     
-    #button_search:hover {
+    #button_search:hover, #button_forecast:hover, #button_back:hover{
         background-color:rgba(246, 187, 23, 0);
     }
-    #button_forecast:hover {
-        background-color:rgba(246, 187, 23, 0);
-    }
+    
     #time_label{
         border-radius: 10px;
         color: white;
@@ -100,5 +98,13 @@ class Style_Sheet:
     }
     #wetterbild{
          padding: 0px 100px 0px 100px;
+    }
+    #test_label{
+        background-color: rgba(224, 222, 224, 0.37);
+        border: 3px solid black;
+        border-radius: 20px;
+    }
+    #content{
+        background-color: red;
     }
     """
