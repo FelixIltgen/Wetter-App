@@ -9,7 +9,7 @@ from datetime import datetime
 
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QGraphicsDropShadowEffect, QDialog
 from PyQt5.QtGui import QIcon, QPixmap 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QRect
 from PyQt5 import QtWidgets
 
 class WeatherApp(QDialog):
@@ -24,6 +24,7 @@ class WeatherApp(QDialog):
         self.input_field = QLineEdit("Herbolzheim",self)
         self.button_search = QPushButton("Wetter suchen 🔎",self)
         self.weather_pic = QLabel(self)
+        
         self.pixmap = QPixmap("")
         self.time_label = QLabel(self)
         self.output_label = QLabel(self)
@@ -34,6 +35,11 @@ class WeatherApp(QDialog):
         self.init_ui()
         
     def init_ui(self):
+    
+        widget.setGeometry(0,0,350,200)
+        self.center_window()
+        widget.setWindowTitle("Wetter App")
+        widget.setWindowIcon(QIcon("pictures//app_icon.png"))
         
         #Adjust name and icon of the window
         self.setWindowTitle("Wetter App")
@@ -70,9 +76,8 @@ class WeatherApp(QDialog):
         
     def get_user_input_start_api(self):
         #Set inital window size and center window
-        self.setGeometry(0,0,550,950)
+        #widget.setGeometry(0,0,550,1100)
         self.center_window()
-        
         #Convert user input into string
         self.user_input = self.input_field.text()
         
@@ -81,7 +86,6 @@ class WeatherApp(QDialog):
         self.forecast_data = Weather_api.request_forecast()
     
         self.display_forecast()
-        
         
         #check if response is empty
         if(not self.weather_data):
@@ -113,6 +117,8 @@ class WeatherApp(QDialog):
             self.button_forecast.setText("Wetterbericht")
             self.button_forecast.setObjectName("button_forecast")
             
+            
+            
             #Add remaining widgets to the vertical box layout
             self.vbox.addWidget(self.weather_pic)
             self.vbox.addWidget(self.time_label)
@@ -122,6 +128,8 @@ class WeatherApp(QDialog):
             #Set vertical box layout
             self.setLayout(self.vbox)
             #Construct the output string
+            self.weather_pic.setObjectName("wetterbild")
+            
             string = f"""Aktuelles Wetter für {self.user_input}\nWetter: {self.weather_data["description"]}\nTemperatur: {self.weather_data["temp"]:.1f} C° | Gefühlt: {self.weather_data["feels_like"]:.1f} C°\nMinimal: {self.weather_data["temp_min"]:.1f} C° und maximal {self.weather_data["temp_max"]:.1f} C°\nLuftfeuchtigkeit: {self.weather_data["humidity"]} %"""
             
             #Set string into output text
@@ -131,9 +139,8 @@ class WeatherApp(QDialog):
             self.time_label.setText(self.get_local_time())
             self.select_weather_pic()
             
-            
-            
-            
+            self.button_forecast.clicked.connect(self.switch_screen)
+                  
     def extrtact_weather_data(self,data=dict) -> dict:
         #Extract system data from response data
         dict_data = data["sys"] # type: ignore
@@ -150,6 +157,7 @@ class WeatherApp(QDialog):
         self.weather_data = dict_data
         
     def select_weather_pic(self):
+        #self.weather_pic.setGeometry(0,0,200,200)
         #Selcet correct weather picture based on retrieved weather codes 
         if(200 <= self.weather_data["id"] <= 232):
             self.change_gui_appearance("pictures//lightning_bolt.png","weatherApp_DarkCloud")
@@ -162,7 +170,7 @@ class WeatherApp(QDialog):
             if(self.is_night()):
                 self.change_gui_appearance("pictures//rain_night.png","weatherApp_LightCloud")
             else:
-                self.change_gui_appearance("pictures//rain.png","weatherApp_cloud_sun")
+                self.change_gui_appearance("pictures//storm.png","weatherApp_cloud_sun")
              
         elif(self.weather_data["id"]== 511 or 600<= self.weather_data["id"]<= 622):
             self.change_gui_appearance("pictures//snow.png","weatherApp_LightCloud")
@@ -197,7 +205,6 @@ class WeatherApp(QDialog):
         self.weather_pic.setGraphicsEffect(weather_shadow)
     
     def change_gui_appearance(self, path=str, css_ID=str):
-            
         #Initialize QPixmap and set pixmap to Qlabel
         pixmap = QPixmap(path)
         self.weather_pic.setPixmap(pixmap)
@@ -256,16 +263,42 @@ class WeatherApp(QDialog):
             
     def center_window(self):
         #Window into the center of the screen
-        qtRectangle = self.frameGeometry()
+        qtRectangle = widget.frameGeometry()
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
-        self.move(qtRectangle.topLeft())
+        widget.move(qtRectangle.topLeft())
+    
+    def switch_screen(self):
+        print("Screen Zwei")
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
+class Screen_two(QDialog):
+    
+    def __init__(self):
+        super().__init__()
+        self.load_UI()
+        
+    def load_UI(self):
+        self.test_label = QLabel("Test",self)
+        self.test_button = QPushButton("Test",self)
+        self.test_button.clicked.connect(self.switch_screen)
+        self.picture = QLabel(self)
+        self.picture.setGeometry(0,0,100,100)
+        self.pixmap = QPixmap("pictures//clouds.png")
+        self.picture.setPixmap(self.pixmap)
+        self.picture.setScaledContents(True)
+          
+    def switch_screen(self):
+        widget.setCurrentIndex(widget.currentIndex()-1)
  
 if __name__ == "__main__":
     app = QApplication(syst.argv)
     widget = QtWidgets.QStackedWidget()
     window = WeatherApp()
-    window.show()
+    screen_two = Screen_two()
+    widget.addWidget(window)
+    widget.addWidget(screen_two)
+    widget.show()
     syst.exit(app.exec_())      
     
         

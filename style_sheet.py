@@ -98,4 +98,7 @@ class Style_Sheet:
         padding: 10px;
         margin: 20px 0px 0px 0px;
     }
+    #wetterbild{
+         padding: 0px 100px 0px 100px;
+    }
     """
