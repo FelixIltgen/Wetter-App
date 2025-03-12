@@ -3,22 +3,23 @@ from style_sheet import *
 
 import sys as syst
 import time
-import json
 
 from datetime import timezone as tz
 from datetime import datetime
 
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QGraphicsDropShadowEffect
+from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QGraphicsDropShadowEffect, QDialog
 from PyQt5.QtGui import QIcon, QPixmap 
 from PyQt5.QtCore import Qt
+from PyQt5 import QtWidgets
 
-class WeatherApp(QWidget):
+class WeatherApp(QDialog):
+    
     user_input = ""
     weather_data = {}
     forecast_data = {}
     
     def __init__(self):
-        super().__init__()
+        super(WeatherApp,self).__init__()
         #Initialise GUI components
         self.input_field = QLineEdit("Herbolzheim",self)
         self.button_search = QPushButton("Wetter suchen 🔎",self)
@@ -74,11 +75,11 @@ class WeatherApp(QWidget):
         
         #Convert user input into string
         self.user_input = self.input_field.text()
+        
         #start api request with user input
         self.weather_data = Weather_api.convert_name_in_location(self.user_input)
         self.forecast_data = Weather_api.request_forecast()
-        #print(self.forecast_data)
-        #print(json.dumps(self.forecast_data,indent=4))
+    
         self.display_forecast()
         
         
@@ -129,6 +130,9 @@ class WeatherApp(QWidget):
             #Set calculated time
             self.time_label.setText(self.get_local_time())
             self.select_weather_pic()
+            
+            
+            
             
     def extrtact_weather_data(self,data=dict) -> dict:
         #Extract system data from response data
@@ -256,9 +260,14 @@ class WeatherApp(QWidget):
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
         self.move(qtRectangle.topLeft())
-      
-    def start_gui():
-        app = QApplication(syst.argv)
-        window = WeatherApp()
-        window.show()
-        syst.exit(app.exec_())
+ 
+if __name__ == "__main__":
+    app = QApplication(syst.argv)
+    widget = QtWidgets.QStackedWidget()
+    window = WeatherApp()
+    window.show()
+    syst.exit(app.exec_())      
+    
+        
+        
+
