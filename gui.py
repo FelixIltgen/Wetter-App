@@ -74,6 +74,7 @@ class WeatherApp(QDialog):
         self.center_window()
         #Convert user input into string
         self.user_input = self.input_field.text()
+        Screen_two.user_input = self.user_input
         
         #start api request with user input
         self.weather_data = Weather_api.convert_name_in_location(self.user_input)
@@ -250,6 +251,7 @@ class Screen_two(QDialog):
     extracted_data = []
     sunrise = int
     sunset = int
+    user_input = ""
     def __init__(self):
         super().__init__()
         self.forecast_data = Weather_api.request_forecast()
@@ -280,7 +282,7 @@ class Screen_two(QDialog):
         weather_pic = QLabel()
         Screen_two.select_weather_pic(weather_id,weather_pic,hbox,self)
         
-        weather_date = QLabel(f"Wetter am: {self.extracted_data[index]["time_string_date"]}")
+        weather_date = QLabel(f"Wetter am: {self.extracted_data[index]["time_string_date"]} in {self.user_input}")
         weather_info = QLabel(self.extracted_data[index]["description"])
         weather_temp = QLabel(str(self.extracted_data[index]["temp"]))
         
@@ -300,44 +302,44 @@ class Screen_two(QDialog):
     def select_weather_pic(weather_id,weather_pic,hbox,self):
             #Selcet correct weather picture based on retrieved weather codes 
             if(200 <= weather_id <= 232):
-                Screen_two.change_gui_appearance("pictures//pictures_x64//lightning_bolt_x64.png","weatherApp_DarkCloud",weather_pic,hbox)
+                Screen_two.change_gui_appearance("pictures//pictures_x128//lightning_bolt_x128.png","weatherApp_DarkCloud",weather_pic,hbox)
                 
             elif(300 <= weather_id <= 321 or 520 <= weather_id <= 531):
-                Screen_two.change_gui_appearance("pictures//pictures_x64//heavy_rain_x64.png","weatherApp_Rain",weather_pic,hbox)
+                Screen_two.change_gui_appearance("pictures//pictures_x128//heavy_rain_x128.png","weatherApp_Rain",weather_pic,hbox)
                 
             elif (500 <= weather_id <=504):
                 # check if neight mode picture is necessary
                 if(Screen_two.is_night(self)):
-                    Screen_two.change_gui_appearance("pictures//pictures_x64//rain_night_x64.png","weatherApp_LightCloud",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//rain_nightv.png","weatherApp_LightCloud",weather_pic,hbox)
                 else:
-                    Screen_two.change_gui_appearance("pictures//pictures_x64//rain_x64.png","weatherApp_cloud_sun",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//rain_x128.png","weatherApp_cloud_sun",weather_pic,hbox)
                 
             elif(weather_id== 511 or 600<= weather_id<= 622):
-                Screen_two.change_gui_appearance("pictures//pictures_x64//snow_x64.png","weatherApp_LightCloud",weather_pic,hbox)
+                Screen_two.change_gui_appearance("pictures//pictures_x128//snow_x128.png","weatherApp_LightCloud",weather_pic,hbox)
                 
             elif(701 <= weather_id <= 781):
                 if(Screen_two.is_night(self)):
-                    Screen_two.change_gui_appearance("pictures//pictures_x64//haze_night_x64.png","weatherApp_LightCloud",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//haze_night_x128.png","weatherApp_LightCloud",weather_pic,hbox)
                 else:
-                    Screen_two.change_gui_appearance("pictures//pictures_x64//haze_x64.png","weatherApp_cloud_sun",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//haze_x128.png","weatherApp_cloud_sun",weather_pic,hbox)
                 
             elif(weather_id == 800):
                 if(Screen_two.is_night(self)):
-                    Screen_two.change_gui_appearance("pictures//pictures_x64//moon_x64.png","weatherApp_LightCloud",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//moon_x128.png","weatherApp_LightCloud",weather_pic,hbox)
                 else:
-                    Screen_two.change_gui_appearance("pictures//pictures_x64//sun_x64.png","weatherApp_Sun",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//sun_x128.png","weatherApp_Sun",weather_pic,hbox)
                         
             elif(weather_id == 801):
                 if(Screen_two.is_night(self)):
-                    Screen_two.change_gui_appearance("pictures//pictures_x64//cloudy_night_x64.png","weatherApp_LightCloud",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//cloudy_night_x128.png","weatherApp_LightCloud",weather_pic,hbox)
                 else:
-                    Screen_two.change_gui_appearance("pictures//pictures_x64//cloudy_x64.png","weatherApp_cloud_sun",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//cloudy_x128.png","weatherApp_cloud_sun",weather_pic,hbox)
                     
             elif(weather_id == 802):
-                Screen_two.change_gui_appearance("pictures//pictures_x64//cloud_computing_x64.png","weatherApp_LightCloud",weather_pic,hbox)
+                Screen_two.change_gui_appearance("pictures//pictures_x128//cloud_computing_x128.png","weatherApp_LightCloud",weather_pic,hbox)
                 
             elif(803 <= weather_id <= 804):
-                Screen_two.change_gui_appearance("pictures//pictures_x64//clouds_x64.png", "weatherApp_DarkCloud",weather_pic,hbox)
+                Screen_two.change_gui_appearance("pictures//pictures_x128//clouds_x128.png", "weatherApp_DarkCloud",weather_pic,hbox)
     
     def change_gui_appearance(path, css_ID,weather_pic,current_box):
             #Initialize QPixmap and set pixmap to Qlabel
