@@ -112,8 +112,6 @@ class WeatherApp(QDialog):
             self.button_forecast.setText("Wetterbericht")
             self.button_forecast.setObjectName("button_forecast")
             
-            
-            
             #Add remaining widgets to the vertical box layout
             self.vbox.addWidget(self.weather_pic)
             self.vbox.addWidget(self.time_label)
@@ -299,23 +297,24 @@ class Screen_two(QDialog):
         weather_date = QLabel("Datum")
         weather_info = QLabel("Wetterinformation")
         weather_temp = QLabel("Wettertemperatur")
-        content_list = [weather_date,weather_info,weather_temp]
+        
         hbox.addWidget(weather_pic,4)
         weather_pic.setObjectName("content")
+        content_list = [weather_date,weather_info,weather_temp]
         
         for content in content_list:
             content.setObjectName("content")
             vbox.addWidget(content)
         else:
             hbox.addLayout(vbox,12)
-            
+        
+        
         self.box.setLayout(hbox)
         
             
     def switch_screen(self):
         widget.setCurrentIndex(widget.currentIndex()-1)
         
- 
 if __name__ == "__main__":
     app = QApplication(syst.argv)
     widget = QtWidgets.QStackedWidget()
