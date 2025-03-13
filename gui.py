@@ -16,7 +16,6 @@ class WeatherApp(QDialog):
     
     user_input = ""
     weather_data = {}
-    forecast_data = {}
     
     def __init__(self):
         super(WeatherApp,self).__init__()
@@ -78,9 +77,6 @@ class WeatherApp(QDialog):
         
         #start api request with user input
         self.weather_data = Weather_api.convert_name_in_location(self.user_input)
-        self.forecast_data = Weather_api.request_forecast()
-    
-        self.display_forecast()
         
         #check if response is empty
         if(not self.weather_data):
@@ -95,6 +91,8 @@ class WeatherApp(QDialog):
             
             #Extract necessary data from response object
             self.extrtact_weather_data(self.weather_data)
+            Screen_two.sunset = self.weather_data["sunset"]
+            Screen_two.sunrise = self.weather_data["sunrise"]
             
             #Set Object names and center content
             self.time_label.setObjectName("time_label")
@@ -231,29 +229,7 @@ class WeatherApp(QDialog):
         time_location = f"{time_location} Uhr"
         
         return time_location
-    
-    def display_forecast(self):
-        five_day_list = self.forecast_data["list"]
-        five_day_data = []
-        for dic in five_day_list[::8]:
-            five_day_data.append(dic)
-        
-        for dic in five_day_data:
-            necessary_data = {}
-            converted_dic = {k: v for (k,v) in dic["weather"][0].items()} # type: ignore
-            necessary_data.update(converted_dic)
-            necessary_data.update(dic["main"])
-            necessary_data["dt"] = dic["dt"]
-            
-            time_string_date = datetime.fromtimestamp(necessary_data["dt"]).strftime("%d.%m.%Y")
-            time_string_time = datetime.fromtimestamp(necessary_data["dt"]).strftime("%H:%M")
-            
-            print(f"Wetter am {time_string_date} um {time_string_time}")
-            print("")
-            print(f"Temperatur: {necessary_data["temp"]:.1f} C°")
-            print(f"{necessary_data["description"]} Icon: {necessary_data["id"]}")
-            print("****************************************")
-            
+           
     def center_window(self):
         #Window into the center of the screen
         qtRectangle = widget.frameGeometry()
@@ -262,15 +238,21 @@ class WeatherApp(QDialog):
         widget.move(qtRectangle.topLeft())
     
     def switch_screen(self):
-        print("Screen Zwei")
+
         screen_two = Screen_two()
         widget.addWidget(screen_two)
         widget.setCurrentIndex(widget.currentIndex()+1)
+        
 
+        
 class Screen_two(QDialog):
-    
+    forecast_data = {}
+    extracted_data = []
+    sunrise = int
+    sunset = int
     def __init__(self):
         super().__init__()
+        self.forecast_data = Weather_api.request_forecast()
         self.load_UI()
         
     def load_UI(self):
@@ -278,9 +260,10 @@ class Screen_two(QDialog):
         self.test_button = QPushButton("Zurück",self)
         self.test_button.setObjectName("button_back")
         self.setObjectName("weatherApp")
+        self.extracted_data = self.display_forecast()
 
         for i in range(5):
-            self.creat_layout_components()
+            self.creat_layout_components(i,self.extracted_data[i]["id"])
             self.box.setObjectName("test_label")
             self.vbox.addWidget(self.box)
         else:
@@ -289,14 +272,17 @@ class Screen_two(QDialog):
             self.test_button.clicked.connect(self.switch_screen)
             self.setStyleSheet(Style_Sheet.css_content)
         
-    def creat_layout_components(self):
+    def creat_layout_components(self,index,weather_id):
         self.box = QGroupBox()
         hbox = QHBoxLayout()
         vbox = QVBoxLayout()
-        weather_pic = QLabel("Wetterbild")
-        weather_date = QLabel("Datum")
-        weather_info = QLabel("Wetterinformation")
-        weather_temp = QLabel("Wettertemperatur")
+        
+        weather_pic = QLabel()
+        Screen_two.select_weather_pic(weather_id,weather_pic,hbox,self)
+        
+        weather_date = QLabel(f"Wetter am: {self.extracted_data[index]["time_string_date"]}")
+        weather_info = QLabel(self.extracted_data[index]["description"])
+        weather_temp = QLabel(str(self.extracted_data[index]["temp"]))
         
         hbox.addWidget(weather_pic,4)
         weather_pic.setObjectName("content")
@@ -307,21 +293,105 @@ class Screen_two(QDialog):
             vbox.addWidget(content)
         else:
             hbox.addLayout(vbox,12)
-        
-        
+
         self.box.setLayout(hbox)
         
-            
+        
+    def select_weather_pic(weather_id,weather_pic,hbox,self):
+            #Selcet correct weather picture based on retrieved weather codes 
+            if(200 <= weather_id <= 232):
+                Screen_two.change_gui_appearance("pictures//pictures_x64//lightning_bolt_x64.png","weatherApp_DarkCloud",weather_pic,hbox)
+                
+            elif(300 <= weather_id <= 321 or 520 <= weather_id <= 531):
+                Screen_two.change_gui_appearance("pictures//pictures_x64//heavy_rain_x64.png","weatherApp_Rain",weather_pic,hbox)
+                
+            elif (500 <= weather_id <=504):
+                # check if neight mode picture is necessary
+                if(Screen_two.is_night(self)):
+                    Screen_two.change_gui_appearance("pictures//pictures_x64//rain_night_x64.png","weatherApp_LightCloud",weather_pic,hbox)
+                else:
+                    Screen_two.change_gui_appearance("pictures//pictures_x64//rain_x64.png","weatherApp_cloud_sun",weather_pic,hbox)
+                
+            elif(weather_id== 511 or 600<= weather_id<= 622):
+                Screen_two.change_gui_appearance("pictures//pictures_x64//snow_x64.png","weatherApp_LightCloud",weather_pic,hbox)
+                
+            elif(701 <= weather_id <= 781):
+                if(Screen_two.is_night(self)):
+                    Screen_two.change_gui_appearance("pictures//pictures_x64//haze_night_x64.png","weatherApp_LightCloud",weather_pic,hbox)
+                else:
+                    Screen_two.change_gui_appearance("pictures//pictures_x64//haze_x64.png","weatherApp_cloud_sun",weather_pic,hbox)
+                
+            elif(weather_id == 800):
+                if(Screen_two.is_night(self)):
+                    Screen_two.change_gui_appearance("pictures//pictures_x64//moon_x64.png","weatherApp_LightCloud",weather_pic,hbox)
+                else:
+                    Screen_two.change_gui_appearance("pictures//pictures_x64//sun_x64.png","weatherApp_Sun",weather_pic,hbox)
+                        
+            elif(weather_id == 801):
+                if(Screen_two.is_night(self)):
+                    Screen_two.change_gui_appearance("pictures//pictures_x64//cloudy_night_x64.png","weatherApp_LightCloud",weather_pic,hbox)
+                else:
+                    Screen_two.change_gui_appearance("pictures//pictures_x64//cloudy_x64.png","weatherApp_cloud_sun",weather_pic,hbox)
+                    
+            elif(weather_id == 802):
+                Screen_two.change_gui_appearance("pictures//pictures_x64//cloud_computing_x64.png","weatherApp_LightCloud",weather_pic,hbox)
+                
+            elif(803 <= weather_id <= 804):
+                Screen_two.change_gui_appearance("pictures//pictures_x64//clouds_x64.png", "weatherApp_DarkCloud",weather_pic,hbox)
+    
+    def change_gui_appearance(path, css_ID,weather_pic,current_box):
+            #Initialize QPixmap and set pixmap to Qlabel
+            pixmap = QPixmap(path)
+            weather_pic.setPixmap(pixmap)
+            #Scale Pixmap to the size of the Qlabel
+            weather_pic.setScaledContents(True)
+            #Change CSS ID and set the changed stylesheet
+            current_box.setObjectName(css_ID)
+            #self.setStyleSheet(Style_Sheet.css_content)    
+           
     def switch_screen(self):
         widget.setCurrentIndex(widget.currentIndex()-1)
+    
+    def display_forecast(self):
+        five_day_list = self.forecast_data["list"]
+        five_day_data = []
+        data_list = []
+        for dic in five_day_list[::8]:
+            five_day_data.append(dic)
         
+        for dic in five_day_data:
+            necessary_data = {}
+            converted_dic = {k: v for (k,v) in dic["weather"][0].items()} # type: ignore
+            necessary_data.update(converted_dic)
+            necessary_data.update(dic["main"])
+            necessary_data["time_string_date"] = datetime.fromtimestamp(dic["dt"]).strftime("%d.%m.%Y")
+            necessary_data["time_string_time"] = datetime.fromtimestamp(dic["dt"]).strftime("%H:%M")
+            
+            # print(f"Wetter am {necessary_data["time_string_date"]} um {necessary_data["time_string_time"]}")
+            # print("")
+            # print(f"Temperatur: {necessary_data["temp"]:.1f} C°")
+            # print(f"{necessary_data["description"]} Icon: {necessary_data["id"]}")
+            # print("****************************************")
+            data_list.append(necessary_data)
+        
+        return data_list
+    
+    def is_night(self) -> bool:
+        #Get current time in unix format
+        current_time = int(time.time())
+        #Check if current time lies between sunrise and sunset of requested location
+        if(current_time >= self.sunrise and current_time <= self.sunset):
+            return False
+        else:
+            return True
+     
 if __name__ == "__main__":
     app = QApplication(syst.argv)
     widget = QtWidgets.QStackedWidget()
     window = WeatherApp()
     widget.addWidget(window)
     widget.show()
-    syst.exit(app.exec_())      
+    syst.exit(app.exec_())    
     
         
         
