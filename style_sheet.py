@@ -41,6 +41,75 @@ class Style_Sheet:
                                             stop: 0 rgb(132, 239, 255), 
                                             stop: 1 rgb(250, 158, 11) );  
     }
+    
+    /*-------------------Forecast------------------*/
+    
+    #weatherApp_cloud_sun_Forecast{
+        background-color: qlineargradient(  x1: 0, y1: 0,
+                                            x2: 0, y2: 1, 
+                                            stop: 0 rgb(209, 176, 92), 
+                                            stop: 1 rgb(95, 105, 123) );
+        border: 3px solid black;
+        border-radius: 20px;    
+    }
+    #weatherApp_DarkCloud_Forecast{
+        background-color: qlineargradient(  x1: 0, y1: 0,
+                                            x2: 0, y2: 1, 
+                                            stop: 0 rgb(135, 151, 172), 
+                                            stop: 1 rgb(61, 68, 81) );
+        border: 3px solid black;
+        border-radius: 20px;    
+    }
+    #weatherApp_LightCloud_Forecast{
+        background-color: qlineargradient(  x1: 0, y1: 0,
+                                            x2: 0, y2: 1, 
+                                            stop: 0 rgb(210, 210, 210), 
+                                            stop: 1 rgb(95, 106, 126) );
+        border: 3px solid black;
+        border-radius: 20px;     
+    }
+    #weatherApp_Rain_Forecast{
+        background-color: qlineargradient(  x1: 0, y1: 0,
+                                            x2: 0, y2: 1, 
+                                            stop: 0 rgb(155, 202, 213), 
+                                            stop: 1 rgb(43, 98, 104) );
+        border: 3px solid black;
+        border-radius: 20px;     
+    }
+    #weatherApp_Thunder_Forecast{
+        background-color: qlineargradient(  x1: 0, y1: 0,
+                                            x2: 0, y2: 1, 
+                                            stop: 0 rgb(180, 180, 180), 
+                                            stop: 1 rgb(49, 49, 48) );
+        border: 3px solid black;
+        border-radius: 20px;
+    }
+    #weatherApp_Sun_Forecast{
+        background-color: qlineargradient(  x1: 0, y1: 0,
+                                            x2: 0, y2: 1, 
+                                            stop: 0 rgb(132, 239, 255), 
+                                            stop: 1 rgb(250, 158, 11) );
+        border: 3px solid black;
+        border-radius: 20px;  
+    }
+    #weather_date{
+        font-family: Comic Sans MS;
+        font-weight: bold;
+        font-size: 20px
+        
+    }
+    #weather_info{
+        font-family: Comic Sans MS;
+        font-weight: bold;
+        font-size: 20px
+        
+    }
+    #weather_temp{
+        font-family: Comic Sans MS;
+        font-weight: bold;
+        font-size: 20px
+    }
+    
     #input_field{   
         border: 3px solid black;
         border-radius: 20px;
@@ -98,13 +167,5 @@ class Style_Sheet:
     }
     #wetterbild{
          padding: 0px 100px 0px 100px;
-    }
-    #test_label{
-        background-color: rgba(224, 222, 224, 0.37);
-        border: 3px solid black;
-        border-radius: 20px;
-    }
-    #content{
-        background-color: red;
     }
     """

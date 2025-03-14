@@ -202,6 +202,7 @@ class WeatherApp(QDialog):
         self.weather_pic.setPixmap(pixmap)
         #Scale Pixmap to the size of the Qlabel
         self.weather_pic.setScaledContents(True)
+        Screen_two.css_id_screen_one = css_ID
             
         #Change CSS ID and set the changed stylesheet
         self.setObjectName(css_ID)
@@ -252,6 +253,7 @@ class Screen_two(QDialog):
     sunrise = int
     sunset = int
     user_input = ""
+    css_id_screen_one = ""
     def __init__(self):
         super().__init__()
         self.forecast_data = Weather_api.request_forecast()
@@ -261,12 +263,12 @@ class Screen_two(QDialog):
         self.vbox = QVBoxLayout()
         self.test_button = QPushButton("Zurück",self)
         self.test_button.setObjectName("button_back")
-        self.setObjectName("weatherApp")
+        self.setObjectName(self.css_id_screen_one)
         self.extracted_data = self.display_forecast()
 
         for i in range(5):
             self.creat_layout_components(i,self.extracted_data[i]["id"])
-            self.box.setObjectName("test_label")
+            
             self.vbox.addWidget(self.box)
         else:
             self.vbox.addWidget(self.test_button)
@@ -280,67 +282,75 @@ class Screen_two(QDialog):
         vbox = QVBoxLayout()
         
         weather_pic = QLabel()
-        Screen_two.select_weather_pic(weather_id,weather_pic,hbox,self)
+        Screen_two.select_weather_pic(weather_id,weather_pic,self.box,self)
         
-        weather_date = QLabel(f"Wetter am: {self.extracted_data[index]["time_string_date"]} in {self.user_input}")
-        weather_info = QLabel(self.extracted_data[index]["description"])
-        weather_temp = QLabel(str(self.extracted_data[index]["temp"]))
+        weather_date = QLabel(f"Wetter am: {self.extracted_data[index]["time_string_date"]}")
+        weather_info = QLabel("Wetter: "+self.extracted_data[index]["description"])
+        weather_temp = QLabel(f"Temperatur: {self.extracted_data[index]["temp"]:.1f} C°")
+        
+        weather_date.setObjectName("weather_date")
+        weather_info.setObjectName("weather_info")
+        weather_temp.setObjectName("weather_temp")
+        
+        #weather_date.setAlignment(Qt.AlignCenter)
+        #weather_info.setAlignment(Qt.AlignCenter)
+        #weather_temp.setAlignment(Qt.AlignCenter)
         
         hbox.addWidget(weather_pic,4)
-        weather_pic.setObjectName("content")
         content_list = [weather_date,weather_info,weather_temp]
         
         for content in content_list:
-            content.setObjectName("content")
+            #content.setObjectName("content")
             vbox.addWidget(content)
         else:
             hbox.addLayout(vbox,12)
 
         self.box.setLayout(hbox)
         
-        
-    def select_weather_pic(weather_id,weather_pic,hbox,self):
+    def select_weather_pic(weather_id,weather_pic,box,self):
             #Selcet correct weather picture based on retrieved weather codes 
             if(200 <= weather_id <= 232):
-                Screen_two.change_gui_appearance("pictures//pictures_x128//lightning_bolt_x128.png","weatherApp_DarkCloud",weather_pic,hbox)
+                Screen_two.change_gui_appearance("pictures//pictures_x128//lightning_bolt_x128.png","weatherApp_DarkCloud_Forecast",weather_pic,box)
                 
             elif(300 <= weather_id <= 321 or 520 <= weather_id <= 531):
-                Screen_two.change_gui_appearance("pictures//pictures_x128//heavy_rain_x128.png","weatherApp_Rain",weather_pic,hbox)
+                Screen_two.change_gui_appearance("pictures//pictures_x128//heavy_rain_x128.png","weatherApp_Rain_Forecast",weather_pic,box)
                 
             elif (500 <= weather_id <=504):
                 # check if neight mode picture is necessary
                 if(Screen_two.is_night(self)):
-                    Screen_two.change_gui_appearance("pictures//pictures_x128//rain_nightv.png","weatherApp_LightCloud",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//rain_night_x128.png","weatherApp_LightCloud_Forecast",weather_pic,box)
                 else:
-                    Screen_two.change_gui_appearance("pictures//pictures_x128//rain_x128.png","weatherApp_cloud_sun",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//rain_x128.png","weatherApp_cloud_sun_Forecast",weather_pic,box)
                 
             elif(weather_id== 511 or 600<= weather_id<= 622):
-                Screen_two.change_gui_appearance("pictures//pictures_x128//snow_x128.png","weatherApp_LightCloud",weather_pic,hbox)
+                Screen_two.change_gui_appearance("pictures//pictures_x128//snow_x128.png","weatherApp_LightCloud_Forecast",weather_pic,box)
                 
             elif(701 <= weather_id <= 781):
                 if(Screen_two.is_night(self)):
-                    Screen_two.change_gui_appearance("pictures//pictures_x128//haze_night_x128.png","weatherApp_LightCloud",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//haze_night_x128.png","weatherApp_LightCloud_Forecast",weather_pic,box)
                 else:
-                    Screen_two.change_gui_appearance("pictures//pictures_x128//haze_x128.png","weatherApp_cloud_sun",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//haze_x128.png","weatherApp_cloud_sun_Forecast",weather_pic,box)
                 
             elif(weather_id == 800):
                 if(Screen_two.is_night(self)):
-                    Screen_two.change_gui_appearance("pictures//pictures_x128//moon_x128.png","weatherApp_LightCloud",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//moon_x128.png","weatherApp_LightCloud_Forecast",weather_pic,box)
+                    
                 else:
-                    Screen_two.change_gui_appearance("pictures//pictures_x128//sun_x128.png","weatherApp_Sun",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//sun_x128.png","weatherApp_Sun_Forecast",weather_pic,box)
                         
             elif(weather_id == 801):
                 if(Screen_two.is_night(self)):
-                    Screen_two.change_gui_appearance("pictures//pictures_x128//cloudy_night_x128.png","weatherApp_LightCloud",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//cloudy_night_x128.png","weatherApp_LightCloud_Forecast",weather_pic,box)
+                    
                 else:
-                    Screen_two.change_gui_appearance("pictures//pictures_x128//cloudy_x128.png","weatherApp_cloud_sun",weather_pic,hbox)
+                    Screen_two.change_gui_appearance("pictures//pictures_x128//cloudy_x128.png","weatherApp_cloud_sun_Forecast",weather_pic,box)
                     
             elif(weather_id == 802):
-                Screen_two.change_gui_appearance("pictures//pictures_x128//cloud_computing_x128.png","weatherApp_LightCloud",weather_pic,hbox)
+                Screen_two.change_gui_appearance("pictures//pictures_x128//cloud_computing_x128.png","weatherApp_LightCloud_Forecast",weather_pic,box)
                 
             elif(803 <= weather_id <= 804):
-                Screen_two.change_gui_appearance("pictures//pictures_x128//clouds_x128.png", "weatherApp_DarkCloud",weather_pic,hbox)
-    
+                Screen_two.change_gui_appearance("pictures//pictures_x128//clouds_x128.png", "weatherApp_DarkCloud_Forecast",weather_pic,box)
+                
     def change_gui_appearance(path, css_ID,weather_pic,current_box):
             #Initialize QPixmap and set pixmap to Qlabel
             pixmap = QPixmap(path)
@@ -349,8 +359,11 @@ class Screen_two(QDialog):
             weather_pic.setScaledContents(True)
             #Change CSS ID and set the changed stylesheet
             current_box.setObjectName(css_ID)
-            #self.setStyleSheet(Style_Sheet.css_content)    
-           
+            
+            weather_shadow = QGraphicsDropShadowEffect()
+            weather_shadow.setBlurRadius(20)
+            weather_pic.setGraphicsEffect(weather_shadow)
+                
     def switch_screen(self):
         widget.setCurrentIndex(widget.currentIndex()-1)
     
@@ -369,11 +382,6 @@ class Screen_two(QDialog):
             necessary_data["time_string_date"] = datetime.fromtimestamp(dic["dt"]).strftime("%d.%m.%Y")
             necessary_data["time_string_time"] = datetime.fromtimestamp(dic["dt"]).strftime("%H:%M")
             
-            # print(f"Wetter am {necessary_data["time_string_date"]} um {necessary_data["time_string_time"]}")
-            # print("")
-            # print(f"Temperatur: {necessary_data["temp"]:.1f} C°")
-            # print(f"{necessary_data["description"]} Icon: {necessary_data["id"]}")
-            # print("****************************************")
             data_list.append(necessary_data)
         
         return data_list
