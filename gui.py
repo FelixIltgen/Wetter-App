@@ -16,7 +16,8 @@ class WeatherApp(QDialog):
     
     user_input = ""
     weather_data = {}
-    
+    screen_count = 0
+    screen_two = ""
     def __init__(self):
         super(WeatherApp,self).__init__()
         #Initialise GUI components
@@ -240,10 +241,16 @@ class WeatherApp(QDialog):
         widget.move(qtRectangle.topLeft())
     
     def switch_screen(self):
-
-        screen_two = Screen_two()
-        widget.addWidget(screen_two)
-        widget.setCurrentIndex(widget.currentIndex()+1)
+        if (self.screen_count <= 0):
+            self.screen_two = Screen_two()
+            widget.addWidget(self.screen_two)
+            widget.setCurrentIndex(widget.currentIndex()+1)
+            self.screen_count =+ 1
+        else:
+            widget.removeWidget(self.screen_two)
+            self.screen_two = Screen_two()
+            widget.addWidget(self.screen_two)
+            widget.setCurrentIndex(widget.currentIndex()+1)
         
 
         
@@ -366,6 +373,7 @@ class Screen_two(QDialog):
                 
     def switch_screen(self):
         widget.setCurrentIndex(widget.currentIndex()-1)
+        
     
     def display_forecast(self):
         five_day_list = self.forecast_data["list"]
