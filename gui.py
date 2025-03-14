@@ -348,7 +348,6 @@ class Screen_two(QDialog):
             elif(weather_id == 801):
                 if(Screen_two.is_night(self)):
                     Screen_two.change_gui_appearance("pictures//pictures_x128//cloudy_night_x128.png","weatherApp_LightCloud_Forecast",weather_pic,box)
-                    
                 else:
                     Screen_two.change_gui_appearance("pictures//pictures_x128//cloudy_x128.png","weatherApp_cloud_sun_Forecast",weather_pic,box)
                     
