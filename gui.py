@@ -297,7 +297,7 @@ class Screen_two(QDialog):
         weather_pic = QLabel()
         Screen_two.select_weather_pic(weather_id,weather_pic,self.box,self)
         
-        weather_date = QLabel(f"{self.extracted_data[index]["weekday"]} {self.extracted_data[index]["time_string_date"]}")
+        weather_date = QLabel(f"{self.extracted_data[index]["weekday"]}{self.extracted_data[index]["time_string_date"]} | {self.extracted_data[index]["time_string_time"]} Uhr")
         weather_info = QLabel("Wetter: "+self.extracted_data[index]["description"])
         weather_temp = QLabel(f"Temperatur: {self.extracted_data[index]["temp"]:.1f} C°")
         
