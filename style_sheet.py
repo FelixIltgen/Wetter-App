@@ -149,7 +149,7 @@ class Style_Sheet:
         border-radius: 10px;
         color: white;
         font-family: Comic Sans MS;
-        font-size: 30px;
+        font-size: 60px;
         font-weight: bold;
         background-color: rgba(224, 222, 224, 0.37);
         padding: 10px;

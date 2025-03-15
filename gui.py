@@ -37,7 +37,7 @@ class WeatherApp(QDialog):
     def init_ui(self):
     
         #Adjust name and icon of the window
-        widget.setGeometry(0,0,350,0)
+        widget.setGeometry(0,0,350,230)
         self.center_window()
         widget.setWindowTitle("Wetter App")
         widget.setWindowIcon(QIcon("pictures//app_icon.png"))
@@ -71,7 +71,7 @@ class WeatherApp(QDialog):
         
     def get_user_input_start_api(self):
         #Set inital window size and center window
-        widget.setGeometry(0,0,300,850)
+        widget.setGeometry(0,0,480,950)
         self.center_window()
         #Convert user input into string
         self.user_input = self.input_field.text()
@@ -291,7 +291,7 @@ class Screen_two(QDialog):
         weather_pic = QLabel()
         Screen_two.select_weather_pic(weather_id,weather_pic,self.box,self)
         
-        weather_date = QLabel(f"Wetter am: {self.extracted_data[index]["time_string_date"]}")
+        weather_date = QLabel(f"{self.extracted_data[index]["weekday"]} {self.extracted_data[index]["time_string_date"]}")
         weather_info = QLabel("Wetter: "+self.extracted_data[index]["description"])
         weather_temp = QLabel(f"Temperatur: {self.extracted_data[index]["temp"]:.1f} C°")
         
@@ -372,7 +372,6 @@ class Screen_two(QDialog):
                 
     def switch_screen(self):
         widget.setCurrentIndex(widget.currentIndex()-1)
-        
     
     def display_forecast(self):
         five_day_list = self.forecast_data["list"]
@@ -388,6 +387,23 @@ class Screen_two(QDialog):
             necessary_data.update(dic["main"])
             necessary_data["time_string_date"] = datetime.fromtimestamp(dic["dt"]).strftime("%d.%m.%Y")
             necessary_data["time_string_time"] = datetime.fromtimestamp(dic["dt"]).strftime("%H:%M")
+            necessary_data["weekday"] = datetime.fromtimestamp(dic["dt"]).strftime("%a")
+            
+            match necessary_data["weekday"]:
+                case "Sun":
+                    necessary_data["weekday"] = "So."
+                case "Mon":
+                    necessary_data["weekday"] = "Mo."
+                case "Tue":
+                    necessary_data["weekday"] = "Di."
+                case "Wed":
+                    necessary_data["weekday"] = "Mi."
+                case "Thu":
+                    necessary_data["weekday"] = "Do."
+                case "Fri":
+                    necessary_data["weekday"] = "Fr."
+                case "Sat":
+                    necessary_data["weekday"] = "Sa."
             
             data_list.append(necessary_data)
         
@@ -408,8 +424,6 @@ if __name__ == "__main__":
     window = WeatherApp()
     widget.addWidget(window)
     widget.show()
-    syst.exit(app.exec_())    
-    
-        
-        
+    syst.exit(app.exec_())
 
+#Wochentage hinzufügen
