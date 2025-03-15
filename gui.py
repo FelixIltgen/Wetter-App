@@ -8,7 +8,7 @@ from datetime import timezone as tz
 from datetime import datetime
 
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QGridLayout, QGraphicsDropShadowEffect, QDialog, QGroupBox
-from PyQt5.QtGui import QIcon, QPixmap 
+from PyQt5.QtGui import QIcon, QPixmap, QFont, QFontDatabase
 from PyQt5.QtCore import Qt, QRect
 from PyQt5 import QtWidgets
 
@@ -41,6 +41,11 @@ class WeatherApp(QDialog):
         self.center_window()
         widget.setWindowTitle("Wetter App")
         widget.setWindowIcon(QIcon("pictures//app_icon.png"))
+        
+        #Set font
+        font_id = QFontDatabase.addApplicationFont("fonts//DS-DIGIT.TTF")
+        font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
+        self.digital_clock_font = QFont(font_family)
         
         #Add Widgets to vertical vox layout
         self.vbox.addWidget(self.input_field)
@@ -99,6 +104,7 @@ class WeatherApp(QDialog):
             #Set Object names and center content
             self.time_label.setObjectName("time_label")
             self.time_label.setAlignment(Qt.AlignCenter)
+            self.time_label.setFont(self.digital_clock_font)
             
             self.output_label.setObjectName("output_label")
             self.output_label.setAlignment(Qt.AlignCenter)
@@ -229,7 +235,7 @@ class WeatherApp(QDialog):
         unix_time_of_location = int(utc_unix_timestamp + self.weather_data["timezone"]) # type: ignore
         #Convert calculated unix timestamp into normal time 
         time_location = datetime.fromtimestamp(unix_time_of_location).strftime("%H:%M")
-        time_location = f"{time_location} Uhr"
+        time_location = f"{time_location}"
         
         return time_location
            
@@ -298,10 +304,6 @@ class Screen_two(QDialog):
         weather_date.setObjectName("weather_date")
         weather_info.setObjectName("weather_info")
         weather_temp.setObjectName("weather_temp")
-        
-        #weather_date.setAlignment(Qt.AlignCenter)
-        #weather_info.setAlignment(Qt.AlignCenter)
-        #weather_temp.setAlignment(Qt.AlignCenter)
         
         hbox.addWidget(weather_pic,4)
         content_list = [weather_date,weather_info,weather_temp]

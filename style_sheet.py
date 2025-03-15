@@ -148,8 +148,7 @@ class Style_Sheet:
     #time_label{
         border-radius: 10px;
         color: white;
-        font-family: Comic Sans MS;
-        font-size: 60px;
+        font-size: 100px;
         font-weight: bold;
         background-color: rgba(224, 222, 224, 0.37);
         padding: 10px;
