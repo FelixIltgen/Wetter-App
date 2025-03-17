@@ -9,7 +9,7 @@ from datetime import datetime
 
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QDesktopWidget, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QGridLayout, QGraphicsDropShadowEffect, QDialog, QGroupBox
 from PyQt5.QtGui import QIcon, QPixmap, QFont, QFontDatabase
-from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets
 
 class WeatherApp(QDialog):
@@ -18,6 +18,7 @@ class WeatherApp(QDialog):
     weather_data = {}
     screen_count = 0
     screen_two = ""
+    
     def __init__(self):
         super(WeatherApp,self).__init__()
         #Initialise GUI components
@@ -98,12 +99,16 @@ class WeatherApp(QDialog):
             
             #Extract necessary data from response object
             self.extrtact_weather_data(self.weather_data)
+            
+            #Set sunset and sunrise variables for second screen
             Screen_two.sunset = self.weather_data["sunset"]
             Screen_two.sunrise = self.weather_data["sunrise"]
             
             #Set Object names and center content
             self.time_label.setObjectName("time_label")
             self.time_label.setAlignment(Qt.AlignCenter)
+            
+            #Set the custom font
             self.time_label.setFont(self.digital_clock_font)
             
             self.output_label.setObjectName("output_label")
@@ -126,6 +131,7 @@ class WeatherApp(QDialog):
             
             #Set vertical box layout
             self.setLayout(self.vbox)
+            
             #Construct the output string
             self.weather_pic.setObjectName("wetterbild")
             
@@ -138,6 +144,7 @@ class WeatherApp(QDialog):
             self.time_label.setText(self.get_local_time())
             self.select_weather_pic()
             
+            #Connect function to the button
             self.button_forecast.clicked.connect(self.switch_screen)
                   
     def extrtact_weather_data(self,data=dict) -> dict:
@@ -247,19 +254,26 @@ class WeatherApp(QDialog):
         widget.move(qtRectangle.topLeft())
     
     def switch_screen(self):
+        #Check if a second screen already exists
         if (self.screen_count <= 0):
+            #Create a new screen object
             self.screen_two = Screen_two()
+            #Add the new object to the widget
             widget.addWidget(self.screen_two)
+            #Increment the widget index to the new screen object
             widget.setCurrentIndex(widget.currentIndex()+1)
+            #Increment screen count
             self.screen_count =+ 1
         else:
+            #Remove existing screen object from the widget
             widget.removeWidget(self.screen_two)
+            #Create a new screen object
             self.screen_two = Screen_two()
+            #Add the new object to the widget
             widget.addWidget(self.screen_two)
+            #Increment the widget index
             widget.setCurrentIndex(widget.currentIndex()+1)
-        
-
-        
+              
 class Screen_two(QDialog):
     forecast_data = {}
     extracted_data = []
