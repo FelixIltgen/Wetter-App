@@ -281,53 +281,71 @@ class Screen_two(QDialog):
     sunset = int
     user_input = ""
     css_id_screen_one = ""
+    
     def __init__(self):
         super().__init__()
+        #Request forecast data from the API
         self.forecast_data = Weather_api.request_forecast()
         self.load_UI()
         
     def load_UI(self):
+        #Create initial components for screen two
         self.vbox = QVBoxLayout()
         self.test_button = QPushButton("Zurück",self)
+        
+        #Set object names for css stylesheet
         self.test_button.setObjectName("button_back")
         self.setObjectName(self.css_id_screen_one)
+        
+        #Extract data from response data
         self.extracted_data = self.display_forecast()
 
+        #Gui construction
         for i in range(5):
             self.creat_layout_components(i,self.extracted_data[i]["id"])
             
+            #Add created object (self.box) from method above to the main layout
             self.vbox.addWidget(self.box)
         else:
+            #Add button to the main layout and set the layouts
             self.vbox.addWidget(self.test_button)
             self.setLayout(self.vbox)
+            
+            #Connect button function to the button
             self.test_button.clicked.connect(self.switch_screen)
+            
+            #Set stylsheet
             self.setStyleSheet(Style_Sheet.css_content)
         
     def creat_layout_components(self,index,weather_id):
+        #Create necessary gui components for the content
         self.box = QGroupBox()
         hbox = QHBoxLayout()
         vbox = QVBoxLayout()
-        
         weather_pic = QLabel()
+        
         Screen_two.select_weather_pic(weather_id,weather_pic,self.box,self)
         
+        #Set the text for each label
         weather_date = QLabel(f"{self.extracted_data[index]["weekday"]}{self.extracted_data[index]["time_string_date"]} | {self.extracted_data[index]["time_string_time"]} Uhr")
         weather_info = QLabel("Wetter: "+self.extracted_data[index]["description"])
         weather_temp = QLabel(f"Temperatur: {self.extracted_data[index]["temp"]:.1f} C°")
         
+        #Set the object name for each label
         weather_date.setObjectName("weather_date")
         weather_info.setObjectName("weather_info")
         weather_temp.setObjectName("weather_temp")
         
+        #Add all widgets to the corresponding layouts 
         hbox.addWidget(weather_pic,4)
         content_list = [weather_date,weather_info,weather_temp]
         
         for content in content_list:
-            #content.setObjectName("content")
             vbox.addWidget(content)
         else:
             hbox.addLayout(vbox,12)
-
+            
+        #Set the layout into the Groupbox widget
         self.box.setLayout(hbox)
         
     def select_weather_pic(weather_id,weather_pic,box,self):
@@ -382,29 +400,37 @@ class Screen_two(QDialog):
             #Change CSS ID and set the changed stylesheet
             current_box.setObjectName(css_ID)
             
+            #Apply shadow to the picture
             weather_shadow = QGraphicsDropShadowEffect()
             weather_shadow.setBlurRadius(20)
             weather_pic.setGraphicsEffect(weather_shadow)
                 
     def switch_screen(self):
+        #Decrement current widget index
         widget.setCurrentIndex(widget.currentIndex()-1)
     
     def display_forecast(self):
+        #Store list data [{}] 
         five_day_list = self.forecast_data["list"]
         five_day_data = []
         data_list = []
+        #Extract every 8th dict from the list
         for dic in five_day_list[::8]:
             five_day_data.append(dic)
         
         for dic in five_day_data:
             necessary_data = {}
+            #Extract dict from dic key weather
             converted_dic = {k: v for (k,v) in dic["weather"][0].items()} # type: ignore
+            #Merge extracted data
             necessary_data.update(converted_dic)
             necessary_data.update(dic["main"])
+            #Add multible time variables
             necessary_data["time_string_date"] = datetime.fromtimestamp(dic["dt"]).strftime("%d.%m.%Y")
             necessary_data["time_string_time"] = datetime.fromtimestamp(dic["dt"]).strftime("%H:%M")
             necessary_data["weekday"] = datetime.fromtimestamp(dic["dt"]).strftime("%a")
             
+            #Convert english weekday shorcut into german
             match necessary_data["weekday"]:
                 case "Sun":
                     necessary_data["weekday"] = "So."
