@@ -2,8 +2,10 @@
 ### Ein kompaktes Wetter Programm für das aktuelle Wetter. 
 
 Hierbei handelt es sich um eine kompakte Wetter-App, welche das aktuelle Wetter und eine fünftägige Wettervorhersage für einen beliebigen Standort ermittelt. Die dafür benötigten Daten erhält das Programm über einen API Request. Dazu wurde die kostenlose Version der API von [OpenWeather](https://openweathermap.org/) genutzt. Die durch den Request erhaltenen Daten werden durch das Programm bereinigt und für den in diesem Projekt benötigten Umfang reduziert. Anschließend werden die Daten dem Nutzer visuell aufbereitet präsentiert. 
+
 ![Image](https://github.com/user-attachments/assets/9a7ee1b4-bc07-4b37-ba70-c6accab4e781)
 ![Image](https://github.com/user-attachments/assets/7b4c32b2-0fe0-420f-8dc2-3481027cdb1f)
+
 Geschrieben wurde das Projekt mit:
 ```
 Python 3.13.0
