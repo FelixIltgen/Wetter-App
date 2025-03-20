@@ -13,7 +13,15 @@ Python 3.13.0
 ### Hinweis!
 Um alle Funktionen des Programms fehlerfrei nutzen zu können, ist es zwingend notwenig, dass sich das Endgerät in der [CET](https://www.timeanddate.com/time/zones/cet) Zeitzone befindet. Falls dies dennoch der Fall sein sollte, kann es bei der Nutzung zu Fehlern bei den Zeitangaben kommen.
 ## Nutzung & Instalation
-Um die Wetter App nutzen zu können, kann der in diesem Repository befindliche Ordner XY heruntergeladen werden. Darin befindet sich eine executable Datei der Wetter App. Diese kann nach dem Download auf einem Windowsrechner ausgeführt werden. 
+### Benötigte Ressourcen
+Folgende Python Module werden für die Nutzung benötigt.
+* PyQt5
+Falls nicht installiert:
+* Requests
+### Instalation
+Clone dieses Repository an einen belibiebigen Ort deines Computers. Führe anschließend in einer Python fähigen IDM die gui.py Datei aus. 
+=> Eine executable ist in Arbeit.
+Um die Wetter App nutzen zu können, kann der in diesem Repository befindliche Ordner XY heruntergeladen werden. Darin befindet sich eine executable Datei der Wetter App. Diese kann nach dem Download auf einem Windowsrechner ausgeführt werden.
 ## API
 ### Doku der API
 * [Current weather data](https://openweathermap.org/current)
