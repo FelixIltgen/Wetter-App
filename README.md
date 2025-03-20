@@ -16,6 +16,7 @@ Um alle Funktionen des Programms fehlerfrei nutzen zu können, ist es zwingend n
 ### Benötigte Ressourcen
 Folgende Python Module werden für die Nutzung benötigt.
 * PyQt5
+
 Falls nicht installiert:
 * Requests
 ### Instalation
