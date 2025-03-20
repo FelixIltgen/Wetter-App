@@ -527,7 +527,3 @@ if __name__ == "__main__":
     widget.addWidget(window)
     widget.show()
     syst.exit(app.exec_())
-
-#Readme
-#Benutzte module
-#Checken ob exe funktioniert.
