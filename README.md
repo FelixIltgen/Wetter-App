@@ -20,9 +20,10 @@ Folgende Python Module werden für die Nutzung benötigt.
 Falls nicht installiert:
 * Requests
 ### Instalation
-Clone dieses Repository an einen belibiebigen Ort deines Computers. Führe anschließend in einer Python fähigen IDM die gui.py Datei aus. 
+Clone dieses Repository an einen belibiebigen Ort deines Computers. Führe anschließend in einer Python fähigen IDM die gui.py Datei aus.
+ 
 => Eine executable ist in Arbeit.
-Um die Wetter App nutzen zu können, kann der in diesem Repository befindliche Ordner XY heruntergeladen werden. Darin befindet sich eine executable Datei der Wetter App. Diese kann nach dem Download auf einem Windowsrechner ausgeführt werden.
+
 ## API
 ### Doku der API
 * [Current weather data](https://openweathermap.org/current)
