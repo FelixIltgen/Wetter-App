@@ -1,4 +1,4 @@
-# Wetter-App ☀️🌦️
+# Weather app ☀️🌦️
 ### A compact weather program to determine the current weather for any location.
 
 This is a compact weather app that determines the current weather and a five-day weather forecast for any location. The program receives the required data via an API request. The free version of the [OpenWeather](https://openweathermap.org/) API was used for this purpose. The data received via the request is adjusted by the program and reduced to the scope required for this project. The data is then presented to the user in a visual format.
